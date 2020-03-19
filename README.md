@@ -16,7 +16,7 @@ With the help of OpenGL provide 2-dimensional and 3-dimensional visualization of
 <h4>3) Model creation </h4>
 Creation of various machine learning models and their deployment with high level api format along with the full controllability.
 
-<h3> Current Functionalities </h4>
+<h3> Current Functionalities </h3>
 The library currently supports following features
 <h4>1) Data handling </h4>
 Data handling includes : Data extraction, loading, preprocessing
