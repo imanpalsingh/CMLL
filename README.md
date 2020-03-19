@@ -28,5 +28,5 @@ The library supports creation of following models :
 (i) Logistic Regression
 
 <h3> Documentation </h3>
-The documentation for CMLL is available [here](https://github.com/imanpalsingh/CMLL/wiki)
+The documentation for CMLL is available [here](https://github.com/imanpalsingh/CMLL/wiki) 
 
