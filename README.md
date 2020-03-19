@@ -2,7 +2,7 @@
 <h2> CMLL : C++'s Machine Learning Library (version 0.0.0) </h2>
 
 <h3> Introduction </h3>
-CMLL is a Machine Learning Library for c++ that is build from scratch using just C++ 17. It is built using the C++17's STL. The matrix and other computational requirements are also written from scratch. The aim of this library is to provide easier creation, manipulation and deployment of Machine Learning models in C++.
+CMLL is a Machine Learning Library for C++ that is build from scratch using just C++ 17and uses the C++17's STL. The matrix and other computational requirements are also written from scratch. The aim of this library is to provide easier creation, manipulation and deployment of Machine Learning models in C++.
 
 <h3> Description </h3> 
 This project is orignally my submission of 'Minor Project' for 6th semester,Computer Science Engineering. It is still in deveopment phase and isn't yet implemented as a functional library. The modules are being deveopled and will be added.
