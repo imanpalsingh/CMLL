@@ -27,8 +27,8 @@
 * Change Logs : 
 1) Date : 20-03-2020 Time : 22:23
    Function LogisticRegression::model (0.0.0 - > 0.0.1) 
-   # Function now uses matrix::inverse_diagonal() instead of matrix::diagonal for calculating inverse of diagonal matrix 'W'
-   # LogisticRegression::model now is faster at fitting
+   # Function now uses matrix::inverse_diagonal() instead of matrix::diagonal for calculating inverse of diagonal matrix 'W'.
+   # LogisticRegression::model now is faster at fitting.
 
 
 *
