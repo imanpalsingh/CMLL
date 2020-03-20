@@ -23,9 +23,10 @@
 
 * Date Created  : FEB_15_20_09_50
  
-* Last modified : FEB_27_20_23_17
+* Last modified : MAR_20_20_23_17
 
-* Change Logs : NONE
+* Change Logs : 
+Added a new function : inverse_diagonal()
 
 *
 */
