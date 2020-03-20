@@ -24,7 +24,12 @@
  
 * Last modified : MAR_16_20_21_35
 
-* Change Logs : NONE
+* Change Logs : 
+1) Date : 20-03-2020 Time : 22:23
+   Function LogisticRegression::model (0.0.0 - > 0.0.1) 
+
+   # Function now uses matrix::inverse_diagonal() instead of matrix::diagonal for calculating inverse of diagonal matrix 'W'
+   # LogisticGression::model now is faster at fitting
 
 *
 
@@ -315,7 +320,7 @@ double LogisticRegression::logistic_function(const double &val)
 * Return : status -1 -> Error
                    0 - > Successful
 
-* Function Version : 0.0.0
+* Function Version : 0.0.1
 
 *
 */
@@ -418,7 +423,7 @@ int LogisticRegression::model(const data::STORAGE &X, const data::STORAGE &y)
     
     
   // Calculating z
-   auto z = matrix::sum( matrix::multiply(X,B), matrix::multiply( matrix::inverse( matrix::LU(W) ), matrix::subtract(y,p) ));
+   auto z = matrix::sum( matrix::multiply(X,B), matrix::multiply( matrix::inverse_diagonal(W), matrix::subtract(y,p) ));
   
   // calculating B
    B = matrix::multiply( matrix::inverse( matrix::LU( matrix::multiply( matrix::multiply( matrix::transpose(X),W), X))), matrix::multiply( matrix::multiply( matrix::transpose(X),W),z));
