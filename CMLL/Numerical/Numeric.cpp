@@ -334,7 +334,7 @@ std::tuple<data::STORAGE,data::STORAGE> matrix::LU(data::STORAGE m1)
         {
             for(int k=i;k<m1.size();k++)
             {
-                int sum=0;
+                double sum=0;
                 for(int j=0;j<i;j++)
                     sum+=(L[i][j] * U[j][k]);
             
@@ -349,7 +349,7 @@ std::tuple<data::STORAGE,data::STORAGE> matrix::LU(data::STORAGE m1)
                     }
                     else
                     {
-                        int sum=0;
+                        double sum=0;
                         for(int j=0;j<i;j++)
                         {
                             sum+=(L[k][j]*U[j][i]);
