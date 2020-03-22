@@ -22,17 +22,22 @@
 
 * Date Created  : FEB_15_20_09_50
  
-* Last modified : MAR_22_20_23_35
+* Last modified : MAR_22_20_19_35
 
 * Change Logs : 
 
-1) Date : 22-03-20 Time : 14:05
+1) Date : 22-03-2020 Time : 19:56
+
+  [Issue #1] No convergence warning 
+  # Fixed : Added a convergence warning
+
+2) Date : 22-03-20 Time : 14:05
     
     LinearRegression class (0.0.0 - > 0.0.1)
     # Linear Regression Now fully implements ELS method
     # New functions in LinearRegression RSS(),TSS(), score()
 
-2) Date : 21-03-2020 Time : 23:03
+3) Date : 21-03-2020 Time : 23:03
    
    Function LogisticRegression::model (0.0.1 - > 0.0.2)
    # Function logistic regression now creates a lesser dimensional identity matrix (more information at function line comments)
@@ -41,7 +46,7 @@
 
    ## Added a new function score()
 
-3) Date : 20-03-2020 Time : 22:23
+4) Date : 20-03-2020 Time : 22:23
    
    Function LogisticRegression::model (0.0.0 - > 0.0.1) 
    # Function now uses matrix::inverse_diagonal() instead of matrix::diagonal for calculating inverse of diagonal matrix 'W'
@@ -611,6 +616,12 @@ int LogisticRegression::model(const data::STORAGE &X, const data::STORAGE &y)
  
 } // while the maximum number of iterations are lesser than maximumand tolerance change is not achieved
 while((iteration_index<Maximum_iterations) && (std::abs(array::maximum(grad)) < Tolerance));
+
+ // Checking if solution actually converged   [as reported in issue #1]
+ if(std::abs(array::maximum(grad)) <= Tolerance)
+{
+    std::cout<<"<In function LogisticRegression::model> Warning : The solution did not converge at 'Maximum_iterations : "<<Maximum_iterations<<"\n";
+}
 
 // Saving the final calculated coefficients
 Coefficients = B;
