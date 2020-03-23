@@ -50,12 +50,7 @@ int main()
 
   //Testting the model
   auto res =  l1.predict(X_test);
-
-  
-  for(auto p:res)
-  {
-    std::cout<<p<<' ';
-  }
+  cmll::out::print(res);
 
 
 
