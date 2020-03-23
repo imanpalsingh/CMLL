@@ -17,25 +17,28 @@
 
 * Project version : 0.0.0
 
-* File version : 0.0.0
+* File version : 0.0.1
 
 * The contents of the program are distributed with versions numbers. If a particular function or content fails to execute, replace it with previous version from the backup folder.
 
 * Date Created  : FEB_15_20_09_50
  
-* Last modified : MAR_22_20_14_13
+* Last modified : MAR_23_20_17_03
 
 * Change Logs : 
 
+        1) Date : 23-03-20 Time 17:02
+        Namespace array:
+        Added new functions contains(),unique()
         
-    1) Date : 22-03-20 Time : 14:12
+        2) Date : 22-03-20 Time : 14:12
         Namespace array :
         Added new functions sum(), raise_power()
 
         Namespace matrix:
         added new function subtract(matrix,scalar); 
         
-    2) Date : 21-=3=20 Time : 21:00 
+        3) Date : 21-03-20 Time : 21:00 
         Namespace matrix :
         Added new function multiply_diagonal() (refer to function level comments for more information)
 
@@ -877,7 +880,7 @@ namespace functions
     parameter : x - >  value to pass through
     return type : double
     */
-    double sigmoid(double x)
+    double sigmoid(const double &x)
     {
         return ( 1/(1+std::exp(-1*x)) );
     }
@@ -888,7 +891,7 @@ namespace functions
     return type : double
     */
 
-    double fast_sigmoid(double x)
+    double fast_sigmoid(const double &x)
     {
         return ( x/(1 + std::fabs(x)) );
     }
@@ -898,7 +901,7 @@ namespace functions
     parameter : x - >  value to pass through, value of alpha in the formula
     return type : double
     */
-     double sigmoid_alpha(double x, double alpha)
+     double sigmoid_alpha(const double &x,const double &alpha)
     {
         return (0.5 * (x * alpha / ( 1 + std::fabs( x * alpha) ) ) + 0.5);
     }
@@ -908,7 +911,7 @@ namespace functions
     return type : double
     */
 
-    double softplus(double x)
+    double softplus(const double &x)
     {
         return (std::log(1+std::exp(x)));
     }
@@ -919,7 +922,7 @@ namespace functions
     parameter : x - >  value to pass through
     return type : double
     */
-    double nami_max(double x)
+    double nami_max(const double &x)
     {
         return (std::exp(x)/1 + softplus(x));
     }
@@ -1084,6 +1087,78 @@ namespace array
 
        return result;
    }
+
+   /*
+
+    * Function Name : contains
+
+    * Description : find if an array contains a particular value
+
+    * Parameters : X - > the STORAGE element
+    *            : value - >  The value to look for
+    * 
+    * Return : result -> true  - >  if it contains , false - > if is doesn't
+
+    * Function Version : 0.0.0
+
+    *
+    */
+
+   bool contains(const data::STORAGE &X, const double value)
+   {
+       
+       
+       // For each element in the array
+       for(auto col:X)
+       {
+           for(auto element:col)
+           {
+               // If the element is equal to the value
+                if(element == value)
+                {
+                    return true;
+                }
+
+           }
+       }
+       //if the element was not found
+       return false;
+   }
+
+    /*
+
+    * Function Name : unique
+
+    * Description :find unique values in an array
+
+    * Parameters : X - > the STORAGE element
+    * 
+    * Return : result -> unique values in an array
+
+    * Function Version : 0.0.0
+
+    *
+    */
+
+   data::STORAGE unique(const data::STORAGE &X)
+   {
+       data::STORAGE result;
+
+       for(auto row:X)
+       {
+           for(auto element:row)
+           {
+               if(!contains(result,element))
+               {
+                   result.push_back({element});
+               }
+           }
+       }
+
+       return result;
+     
+   }
+
 
 
 

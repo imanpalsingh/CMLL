@@ -17,25 +17,28 @@
 
 * Project version : 0.0.0
 
-* File version : 0.0.0
+* File version : 0.0.1
 
 * The contents of the program are distributed with versions numbers. If a particular function or content fails to execute, replace it with previous version from the backup folder.
 
 * Date Created  : FEB_15_20_09_50
  
-* Last modified : MAR_22_20_14_13
+* Last modified : MAR_23_20_17_03
 
 * Change Logs : 
 
+        1) Date : 23-03-20 Time 17:02
+        Namespace array:
+        Added new functions contains(),unique()
         
-        1) Date : 22-03-20 Time : 14:12
+        2) Date : 22-03-20 Time : 14:12
         Namespace array :
         Added new functions sum(), raise_power()
 
         Namespace matrix:
         added new function subtract(matrix,scalar); 
         
-        2) Date : 21-=3=20 Time : 21:00 
+        3) Date : 21-03-20 Time : 21:00 
         Namespace matrix :
         Added new function multiply_diagonal() (refer to function level comments for more information)
 
@@ -87,28 +90,28 @@ namespace functions
     parameter : x - >  value to pass through
     return type : double
     */
-    double sigmoid(double x);
+    double sigmoid(const double &x);
 
     /* 
     Function to pass a value to fast sigmoid function
     parameter : x - >  value to pass through
     return type : double
     */
-    double fast_sigmoid(double x);
+    double fast_sigmoid(const double &x);
 
     /* 
     Function to pass a value to sigmoid function containing alpha
     parameter : x - >  value to pass through, value of alpha in the formula
     return type : double
     */
-    double sigmoid_alpha(double x, double alpha);
+    double sigmoid_alpha(const double &x,const double &alpha);
 
      /* 
     Function to pass a value to softplus function
     parameter : x - >  value to pass through
     return type : double
     */
-    double softplus(double x);
+    double softplus(const double &x);
 
      /* 
     Function to pass a value to nami_max function
@@ -116,7 +119,7 @@ namespace functions
     parameter : x - >  value to pass through
     return type : double
     */
-    double nami_max(double x);
+    double nami_max(const double &x);
 
 }
 
@@ -283,6 +286,23 @@ namespace array
     return type : double
     */
     data::STORAGE raise_power(const data::STORAGE &X,const double pow = 2);
+
+   
+    /*
+    Function to find unique values in a STORAGE element
+    parameters : X - > array(STORAGE element)
+    return type : STORAGE
+    */
+    
+    data::STORAGE unique(const data::STORAGE &X);
+
+    /*
+    Function to find if a array contains a particular value
+    parameters : X - > array(STORAGE element) value - > The value to find
+    Note : The algorithm uses Linear search currrently. Might change in future versions.
+    return type : bool
+    */
+    int contains(const data::STORAGE &X, const double &value,bool);
 
 
 
