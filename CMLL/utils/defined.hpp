@@ -22,12 +22,13 @@
 
 * Date Created  : FEB_15_20_09_28
  
-* Last modified : MAR_22_20_16_28
+* Last modified : MAR_23_20_17_00
 
 * Change Logs : 
 
-* 1) Date: 22-03-2020 Time : 15:15
-       
+*   1) Date : 23-03-2020 Time : 17:00
+        # All the helper functions now have been moved to utils.cpp
+    2) Date: 22-03-2020 Time : 15:15
        # Removed unnecessary flags
 
 
@@ -42,7 +43,7 @@
 
 /* Imports */
 #include<vector>
-#include<tuple>
+
 
 /* N A M E S P A C E S */
 
@@ -60,41 +61,7 @@ namespace data
     */
     typedef std::vector<std::vector<double> > STORAGE;
 
-    /*
-    Function to return columns having the required value
-    Parameters : dataset - >  dataset to look into
-                 cols -> columns to look into
-                 val - >  value to look for
     
-    return type : STORAGE
-    */
-
-    STORAGE where(const STORAGE &dataset,const std::vector<int> &cols, const double &val);
-
-    /*
-    Function to return indexes of columns having the required value
-    Parameters : dataset - >  dataset to look into
-                 cols -> columns to look into
-                 val - >  value to look for
-    return type : std::vector<int>
-    */
-    std::vector<int> where_index(const STORAGE &data,const std::vector<int> &cols,const double &val);
-    
-    /*
-    Function to return rows defined by index
-    Parameters : dataset - >  dataset to look into
-                 rows - > indexes of rows to fetch
-    return type : STORAGE
-    */
-    STORAGE fetch_row(const STORAGE &dataset,const std::vector<int> &rows);
-
-    /*
-    Function to return two subsets (partition) of STORAGE based on a percentage defined
-    Parameters : X - >  dataset to perform split on
-                 perc - > percentage of rows first subset gets
-    return type std::tuple<STORAGE,STORAGE>
-    */
-    std::tuple<STORAGE,STORAGE> split(const STORAGE &X,const double &perc = 0.7);
 }
 
 // Namespace for different flags of Linear Models
@@ -142,16 +109,6 @@ namespace array
     const bool ROW  = true; // or 0
 }
 
-namespace out
-{
-    
-    /*
-    Function to perform a pretty print of a STORAGE element along with number of rows and columns
-    Parameters :  data - >  STORAGE element to print
-    return type : void
-    */
-    void print(const data::STORAGE &data);
 
-}
 }
 #endif
