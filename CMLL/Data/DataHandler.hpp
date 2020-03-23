@@ -84,10 +84,6 @@ namespace csv{
 * Functions : (friend)read(),columns(),rows(),get() OPerator overloading for( [], (),)
 
 * Class version : 0.0.0
-
-* Change Log : None
-
-*
 */
 
 class Handler

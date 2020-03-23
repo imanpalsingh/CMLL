@@ -15,13 +15,13 @@
 
 #include<iostream>
 #include"utils/defined.hpp"
+#include"utils/util.hpp"
 #include"Numerical/Numeric.hpp"
 #include"Linear/Linear.hpp"
 
 
 int main()
 {
-
 
   //Defining data
 
@@ -32,26 +32,25 @@ int main()
                             {123,122,1,34},
                             {12,344,12,12},
                             {23,23,22,12}};
+
    cmll::data::STORAGE y = { {0},
                             {1},
                             {0},
-                            {1},
+                            {0},
                             {1},
                             {0},
-                            {0}};
-
+                            {1}};
   // Creating a logistic Regression model
 
   cmll::linear::LogisticRegression l1;
   l1.model(X,y);
 
   //Creating test set
-  cmll::data::STORAGE X_test = {{1,23,556,12},{67,1.1,2.88,121}};
+  cmll::data::STORAGE X_test = {{1,23,556,12},{67,2.88,1,12}};
 
   //Testting the model
   auto res =  l1.predict(X_test);
   cmll::out::print(res);
-
 
 
 

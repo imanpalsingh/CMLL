@@ -4,7 +4,7 @@ ECHO CMLL EXECUTABLE SCRIPT - Imanpal Singh
 :start
 ECHO ---------------------------------------------------
 ECHO Compiling . . .
-g++ Test.cpp Linear/Linear.cpp utils/defined.cpp Numerical/Numeric.cpp -o main -std=c++17
+g++ Test.cpp Linear/Linear.cpp utils/defined.cpp Numerical/Numeric.cpp utils/util.cpp -o main -std=c++17
 ECHO:
 ECHO:__________________________________________________
 ECHO:
