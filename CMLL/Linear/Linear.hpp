@@ -22,27 +22,48 @@
 
 * Date Created  : FEB_15_20_09_50
  
-* Last modified : MAR_22_20_14_09
+* Last modified : MAR_23_20_19_50
 
 * Change Logs : 
 
-1) Date : 22-03-20 Time : 14:05
-  LinearRegression class (0.0.0 - > 0.0.1)
-  # Linear Regression Now fully implements ELS method
-  # New functions in LinearRegression RSS(),TSS(), score()
+    1) Date : 23-03-20 Time : 17:05
+      LinearRegression class (0.0.1 - > 0.0.2)
+      # New attribute added : Features
+      
+      model() (0.0.1 - > 0.0.2)
+      # Function now stores number of features in X
 
-2) Date : 21-03-2020 Time : 23:03
-   Function LogisticRegression::model (0.0.1 - > 0.0.2)
-   # Function logistic regression now creates a lesser dimensional identity matrix (more information at function line comments)
-   # Logistic regression now is even more faster than 0.0.1
-   # Large Memory issue is also solved.
+      predict() (0.0.0 - > 0.0.1)
+      #Function now checks for X_test's structure.
 
-   ## Added a new function score()
+      LogisticRegression class(0.0.0 - > 0.0.1)
+      # New attribute added : Features
+     
+      model() (0.0.2 - > 0.0.3)
+      # Function now stores number of features in X
 
-3) Date : 20-03-2020 Time : 22:23
-   Function LogisticRegression::model (0.0.0 - > 0.0.1) 
-   # Function now uses matrix::inverse_diagonal() instead of matrix::diagonal for calculating inverse of diagonal matrix 'W'
-   # LogisticRegression::model now is faster at fitting
+      predict() (0.0.0 - > 0.0.1)
+      #Function now checks for X_test's structure
+
+
+    
+    2) Date : 22-03-20 Time : 14:05
+      LinearRegression class (0.0.0 - > 0.0.1)
+      # Linear Regression Now fully implements ELS method
+      # New functions in LinearRegression RSS(),TSS(), score()
+
+    3) Date : 21-03-2020 Time : 23:03
+      Function LogisticRegression::model (0.0.1 - > 0.0.2)
+      # Function logistic regression now creates a lesser dimensional identity matrix (more information at function line comments)
+      # Logistic regression now is even more faster than 0.0.1
+      # Large Memory issue is also solved.
+
+      ## Added a new function score()
+
+    4) Date : 20-03-2020 Time : 22:23
+      Function LogisticRegression::model (0.0.0 - > 0.0.1) 
+      # Function now uses matrix::inverse_diagonal() instead of matrix::diagonal for calculating inverse of diagonal matrix 'W'
+      # LogisticRegression::model now is faster at fitting
 
 
 *
@@ -80,8 +101,6 @@ namespace cmll{
 
 * Class version : 0.0.1
 
-* Change Log : None
-
 *
 */
 class LinearRegression
@@ -89,6 +108,9 @@ class LinearRegression
   
     
     public : 
+
+    // Number of features
+    std::size_t Features;
 
     // STORAGE variable to hold coefficients
     data::STORAGE Coefficients;
@@ -158,9 +180,7 @@ class LinearRegression
 
 * Functions : model() predict()
 
-* Class version : 0.0.0
-
-* Change Log : None
+* Class version : 0.0.1
 
 *
 */
@@ -184,6 +204,8 @@ class LogisticRegression
   
   
   public:
+
+  std::size_t Features;
 
   /* 
   STORAGE element to define the classes. This must be explicitly defined.
@@ -248,6 +270,8 @@ LogisticRegression(const short &activation=SIGMOID, const int &maximum_iteration
 
 
 };
+
+
   }
 }
 

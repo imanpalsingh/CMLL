@@ -22,7 +22,7 @@
 
 * Date Created  : FEB_15_20_09_50
  
-* Last modified : MAR_22_20_19_35
+* Last modified : MAR_23_20_19_56
 
 * Change Logs : 
 
@@ -67,6 +67,7 @@
 #include "Linear.hpp"
 #include "../Numerical/Numeric.hpp"
 #include "../utils/defined.hpp"
+#include "../utils/util.hpp"
 
 
 
@@ -98,7 +99,7 @@ namespace linear
 * Return : (int) 0 - > successful
                 -1 - >  Error
 
-* Function Version : 0.0.1
+* Function Version : 0.0.2
 
 * Goals of Implementation  :  Expect Multithreading being used in this function in version 1.0
 
@@ -125,11 +126,21 @@ int LinearRegression::model(data::STORAGE X,data::STORAGE y)
 
    */
 
+   // Sotring the number of features
+   Features = X[0].size();
+   std::size_t observations = X.size();
+
+   if(observations!=y.size())
+    {
+        std::cout<<"<In function LogisticRegression::model> Error :  X.size()!=y.size(). Not feasible to perform calculations.";
+        return -1;
+    }
+
    /* Initializations */ //
-   auto X_T = matrix::create(X[0].size(),X.size());
-   auto X_T_mul_y = matrix::create(X[0].size(),1);
-   auto X_T_mul_X = matrix::create(X[0].size(),X.size());
-   auto X_T_mul_X_inverse  = matrix::create(X[0].size(),X.size());
+   auto X_T = matrix::create(Features,observations);
+   auto X_T_mul_y = matrix::create(Features,1);
+   auto X_T_mul_X = matrix::create(Features,observations);
+   auto X_T_mul_X_inverse  = matrix::create(Features,observations);
 
 
     try
@@ -170,7 +181,7 @@ int LinearRegression::model(data::STORAGE X,data::STORAGE y)
 
 * Return : result - >  Set of predicted values
 
-* Function Version : 0.0.0
+* Function Version : 0.0.1
 
 *
 */
@@ -185,6 +196,13 @@ data::STORAGE LinearRegression::predict(data::STORAGE X_test)
     {
         std::cout<<"<IN function LinearRegression::predict> Error : The coefficients are required to be calculated first\n";
         
+    }
+
+     // Making sure that the X_test has required number of features
+    else if(!util::is_legal(X_test,Features))
+    {
+        std::cout<<"<IN function LinearRegression::predict> Error : The model was trained with "<<Features<<" features but predict received different number of features\n";
+        return result;
     }
     
     
@@ -411,7 +429,7 @@ double LogisticRegression::logistic_function(const double &val)
 * Return : status -1 -> Error
                    0 - > Successful
 
-* Function Version : 0.0.2
+* Function Version : 0.0.3
 
 *
 */
@@ -456,8 +474,11 @@ int LogisticRegression::model(const data::STORAGE &X, const data::STORAGE &y)
     
     
     
-    
-    if(X.size()!=y.size())
+    // Storing number of features
+    Features = X[0].size();
+    std::size_t observations = X.size();
+
+    if(observations!=y.size())
     {
         std::cout<<"<In function LogisticRegression::model> Error :  X.size()!=y.size(). Not feasible to perform calculations.";
         return -1;
@@ -466,24 +487,20 @@ int LogisticRegression::model(const data::STORAGE &X, const data::STORAGE &y)
 
     /* Intializing */
     
-
- 
-
-    
-   // Defining Initial B as all zeros initially
-    auto B = matrix::create(X[0].size(),1,0);
+    // Defining Initial B as all zeros initially
+    auto B = matrix::create(Features,1,0);
 
     
     //Defining the p matrix
-    auto p = matrix::create(X.size(),1);
+    auto p = matrix::create(observations,1);
 
     
     // Defining the 1 - p matrix
-    auto p_neg = matrix::create(X.size(),1);
+    auto p_neg = matrix::create(observations,1);
 
     
     //defining the W matrix
-    data::STORAGE W = matrix::create(X.size(),1);
+    data::STORAGE W = matrix::create(observations,1);
    
     // Iteration index to keep track of iterations
     int iteration_index=0;
@@ -493,37 +510,37 @@ int LogisticRegression::model(const data::STORAGE &X, const data::STORAGE &y)
     * Variable pre initializations to reduce time complexity
     *  Information on each variable is given at time of assignment, refer to assignment level comments 8
     */
-    auto B_hat = matrix::create(X.size(),1);
+    auto B_hat = matrix::create(observations,1);
 
     
-    data::STORAGE W_inverse = matrix::create(W.size(),1);
+    data::STORAGE W_inverse = matrix::create(observations,1);
 
     
-    data::STORAGE y_minus_p = matrix::create(X.size(),1);
+    data::STORAGE y_minus_p = matrix::create(observations,1);
 
     
-    data::STORAGE w_inverse_mul_y_minus_p = matrix::create(X.size(),1);
+    data::STORAGE w_inverse_mul_y_minus_p = matrix::create(observations,1);
 
     
-    data::STORAGE z = matrix::create(X.size(),1);
+    data::STORAGE z = matrix::create(observations,1);
 
     
-    data::STORAGE X_T = matrix::create(X[0].size(),X.size());
+    data::STORAGE X_T = matrix::create(Features,observations);
 
     
-    data::STORAGE X_T_mul_W = matrix::create(X[0].size(),X.size());
+    data::STORAGE X_T_mul_W = matrix::create(Features,observations);
 
    
-    data::STORAGE X_T_mul_W_mul_X = matrix::create(X[0].size(),X[0].size());
+    data::STORAGE X_T_mul_W_mul_X = matrix::create(Features,Features);
 
     
-    data::STORAGE X_T_mul_W_mul_X_inverse = matrix::create(X[0].size(),X[0].size());
+    data::STORAGE X_T_mul_W_mul_X_inverse = matrix::create(Features,Features);
 
     
-    data::STORAGE X_T_mul_W_mul_X_inverse_mul_X_T = matrix::create(X[0].size(),X.size());
+    data::STORAGE X_T_mul_W_mul_X_inverse_mul_X_T = matrix::create(Features,observations);
     
     
-    data::STORAGE X_T_mul_W_mul_X_inverse_mul_X_T_mul_W = matrix::create(X[0].size(),X.size());
+    data::STORAGE X_T_mul_W_mul_X_inverse_mul_X_T_mul_W = matrix::create(Features,observations);
 
     
 
@@ -640,7 +657,7 @@ Coefficients = B;
 
 * Note :  This function assumes correct shape of the matrix which also includes condition of atleast aXN matrix, where a >= 2 and N is any Natural number.
 
-* Function Version : 0.0.0
+* Function Version : 0.0.1
 
 *
 */
@@ -654,11 +671,17 @@ data::STORAGE LogisticRegression::predict(const data::STORAGE &X_test)
     // Making sure that the model has been created before calling this function
     if(!Coefficients.size())
     {
-        std::cout<<"<IN function LinearRegression::predict> Error : The coefficients are required to be calculated first\n";
+        std::cout<<"<IN function LogisticRegression::predict> Error : The coefficients are required to be calculated first\n";
         return result;
         
     }
-    
+
+    // Making sure that the X_test has required number of features
+    else if(!util::is_legal(X_test,Features))
+    {
+        std::cout<<"<IN function LogisticRegression::predict> Error : The model was trained with "<<Features<<" features but predict received different number of  features\n";
+        return result;
+    }
 
     // Multiplying by coefficient matrix
     auto XB = matrix::multiply(X_test,Coefficients);
@@ -739,6 +762,10 @@ double LogisticRegression::score(const data::STORAGE &y_pred,const data::STORAGE
     //number of times the model was correct/total observations
     return (accuracy/y_pred.size());
 }
+
+
+
+
 
 }
 }
