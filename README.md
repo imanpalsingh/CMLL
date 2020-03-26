@@ -25,7 +25,7 @@ The library supports creation of following models :
 <h5> Regression </h5>
 (i) Linear Regression 
 <h5> Classification </h5>
-(i) Logistic Regression
+(i) Logistic Regression<br>
 (2) Naive Bayes Classifier
 
 <h3> Documentation </h3>
