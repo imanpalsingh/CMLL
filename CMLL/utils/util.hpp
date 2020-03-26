@@ -79,6 +79,7 @@ namespace cmll
 
     /*
     Function to check if a given STORAGE element has the required number of features
+    Parameters : X - >  STORAGE element, size - > size to follow
     return type : bool
     */
 

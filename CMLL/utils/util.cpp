@@ -31,6 +31,7 @@
 */
 #include<tuple>
 #include "defined.hpp"
+#include"../Numerical/Numeric.hpp"
 #include<vector>
 #include<iostream>
 namespace cmll
@@ -242,6 +243,7 @@ namespace cmll
             }
             return true;
         }
+
     }
 
     /* Name space for printing and buffering */
