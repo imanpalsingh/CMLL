@@ -26,6 +26,7 @@ The library supports creation of following models :
 (i) Linear Regression 
 <h5> Classification </h5>
 (i) Logistic Regression
+(2) Naive Bayes Classifier
 
 <h3> Documentation </h3>
 The documentation for CMLL is available at https://github.com/imanpalsingh/CMLL/wiki 
