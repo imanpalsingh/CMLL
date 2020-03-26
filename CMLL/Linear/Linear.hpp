@@ -120,7 +120,7 @@ class LinearRegression
 
     /*
     Function to construct the supervised learning model for Linear Regression 
-    This function can build model in only one was (currently)
+    This function can build model in only one way (currently)
      Method : ELS - > Taken from Elements of Statistical learning Book (deployed)
   
     The coefficients calculated are stored in coefficients STORAGE element

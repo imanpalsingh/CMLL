@@ -673,12 +673,6 @@ data::STORAGE LogisticRegression::predict(const data::STORAGE &X_test)
         
     }
 
-    // Making sure that the X_test has required number of features
-    else if(!util::is_legal(X_test,Features))
-    {
-        std::cout<<"<IN function LogisticRegression::predict> Error : The model was trained with "<<Features<<" features but predict received different number of  features\n";
-        return result;
-    }
 
     // Multiplying by coefficient matrix
     auto XB = matrix::multiply(X_test,Coefficients);
