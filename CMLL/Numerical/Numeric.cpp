@@ -17,16 +17,23 @@
 
 * Project version : 0.0.0
 
-* File version : 0.0.1
+* File version : 0.0.2
 
 * The contents of the program are distributed with versions numbers. If a particular function or content fails to execute, replace it with previous version from the backup folder.
 
 * Date Created  : FEB_15_20_09_50
  
-* Last modified : MAR_23_20_17_03
+* Last modified : MAR_26_20_19_39
 
 * Change Logs : 
 
+        1) Date : 26-03-20 Time 19:38
+        Namespace functions:
+        Added new function  Gaussian_density()
+
+        Namespace array:
+        Added new functions ravel(),unravel()
+        
         1) Date : 23-03-20 Time 17:02
         Namespace array:
         Added new functions contains(),unique()
@@ -64,7 +71,8 @@
 
 /* Functions */
 
-/* Functions associated with matrix namespace */
+namespace cmll
+{
 
 /*
 *
@@ -84,10 +92,6 @@
 
 *
 */
-
-namespace cmll
-{
-
 data::STORAGE matrix::multiply(const data::STORAGE &m1,const data::STORAGE &m2)
 {
     
@@ -927,6 +931,24 @@ namespace functions
         return (std::exp(x)/1 + softplus(x));
     }
 
+    /* 
+    Gaussian probability density function
+    parameter : x - >  value to pass through
+                mean - > Mean value of the population
+                variance -> Mean value of the population
+    return type : double
+    */
+
+    double Gaussian_density(const double &x,const double &mean, const double &variance)
+    {
+        double result;
+        auto e = std::exp((-1*std::pow(x-mean,2))/(2*variance));
+        result = e*(1/(std::sqrt(2*math::PI*variance)));
+            
+        return result;
+    }
+
+
 }
 
 // Namespace for array based operations
@@ -1104,7 +1126,7 @@ namespace array
     *
     */
 
-   bool contains(const data::STORAGE &X, const double value)
+   bool contains(const data::STORAGE &X, const double &value)
    {
        
        
@@ -1158,6 +1180,116 @@ namespace array
        return result;
      
    }
+
+   /*
+
+    * Function Name : column
+
+    * Description : Return columns from the original array
+
+    * Parameters : X - > the STORAGE element
+    *              columns - > Columns to fetch
+    * 
+    * Return : result - > STORAGE element contaning the columns defined.
+
+    * Function Version : 0.0.0
+    
+    * Note: negative indexing is also supported 
+
+    *
+    */
+
+   data::STORAGE column(const data::STORAGE &X,const std::vector<int> &columns)
+   {
+       data::STORAGE result;
+       std::vector<double> temp;
+       
+       // For ever row
+       for(int row=0;row<X.size();row++)
+       {
+           // for every column provided
+           for(auto col:columns)
+           {
+                if(col < 0 ) col = X[0].size() + col;
+
+                temp.emplace_back(X[row][col]);
+           }
+           result.emplace_back(temp);
+           temp.clear();
+       }
+
+       return result;
+   }
+    
+    /*
+
+    * Function Name : ravel
+
+    * Description : Convert a multi dimensional vector(array) into a single dimensional vector
+
+    * Parameters : X - > the STORAGE element
+    * 
+    * Return : result - > the one dimensional vector
+
+    * Function Version : 0.0.0
+    
+    * Note:  Single dimensional vectors are not used in algorithms (expect for expections where easier processing is required).
+
+    *
+    */
+    
+   std::vector<double> ravel(const data::STORAGE &X)
+   {
+       
+       /*
+       Input vector = { {1}, {2}, {3}, {4} ,{5}}
+       output vector = {1,2,3,4,5}
+       */
+       
+       std::vector<double> result;
+
+       for(auto el:X)
+       {
+           for(auto le:el)
+           {
+               result.push_back(le);
+           }
+       }
+
+       return result;
+   }
+
+   /*
+
+    * Function Name : unravel
+
+    * Description : Convert a single dimensional vector into  a multi dimensional vector(array) 
+
+    * Parameters : X - > the STORAGE element
+    * 
+    * Return : result - > the multi dimensional vector
+
+    * Function Version : 0.0.0
+    *
+    */
+
+   data::STORAGE unravel(const std::vector<double> &X)
+   {
+       /*
+       Input vector = { {1}, {2}, {3}, {4} ,{5}}
+       output vector = {1,2,3,4,5}
+       */
+      
+       data::STORAGE result;
+
+       for(auto x:X)
+       {
+           result.push_back({x});
+       }
+
+    return result;
+   }
+
 
 
 

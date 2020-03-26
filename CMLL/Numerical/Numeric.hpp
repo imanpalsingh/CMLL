@@ -17,16 +17,23 @@
 
 * Project version : 0.0.0
 
-* File version : 0.0.1
+* File version : 0.0.2
 
 * The contents of the program are distributed with versions numbers. If a particular function or content fails to execute, replace it with previous version from the backup folder.
 
 * Date Created  : FEB_15_20_09_50
  
-* Last modified : MAR_23_20_17_03
+* Last modified : MAR_26_20_19_39
 
 * Change Logs : 
 
+        1) Date : 26-03-20 Time 19:38
+        Namespace functions:
+        Added new function  Gaussian_density()
+
+        Namespace array:
+        Added new functions ravel(),unravel()
+        
         1) Date : 23-03-20 Time 17:02
         Namespace array:
         Added new functions contains(),unique()
@@ -82,7 +89,7 @@ namespace list
 
 
 
-// Namespace for Activation functions
+// Namespace for various mathematical functions
 namespace functions
 {
     /* 
@@ -120,6 +127,18 @@ namespace functions
     return type : double
     */
     double nami_max(const double &x);
+
+   
+   
+   /* 
+    Gaussian probability density function
+    parameter : x - >  value to pass through
+                mean - > Mean value of the population
+                variance -> Mean value of the population
+    return type : double
+    */
+   double Gaussian_density(const double &x,const double &mean, const double &variance);
+
 
 }
 
@@ -302,7 +321,28 @@ namespace array
     Note : The algorithm uses Linear search currrently. Might change in future versions.
     return type : bool
     */
-    int contains(const data::STORAGE &X, const double &value,bool);
+    bool contains(const data::STORAGE &X, const double &value);
+
+
+    /*
+    Function to return a subset of original STORAGE element containing given columns
+    parameters : X - > array(STORAGE element) columns(vector<int>) - columns to return
+    return type : STORAGE
+    */
+    data::STORAGE column(const data::STORAGE &X,const std::vector<int> &columns);
+
+    /*
+    Function to convert a multidimensional vector into a single vector
+    parameters : X - > array(STORAGE element)
+    return type : std::vector<double>
+    */
+    std::vector<double> ravel(const data::STORAGE &X);
+    /*
+    Function to convert a single vector into  a multidimensional vector 
+    parameters : X - > array(STORAGE element)
+    return type : STORAGE
+    */
+    data::STORAGE unravel(const std::vector<double> &X);
 
 
 
