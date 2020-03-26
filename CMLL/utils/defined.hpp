@@ -22,13 +22,18 @@
 
 * Date Created  : FEB_15_20_09_28
  
-* Last modified : MAR_23_20_17_00
+* Last modified : MAR_26_20_19_42
 
 * Change Logs : 
 
-*   1) Date : 23-03-2020 Time : 17:00
+    1) Date : 26-03-20 Time : 19:41
+       # Added a new namespace math
+       # Added constexpr PI to math
+    
+    2) Date : 23-03-2020 Time : 17:00
         # All the helper functions now have been moved to utils.cpp
-    2) Date: 22-03-2020 Time : 15:15
+    
+    3) Date: 22-03-2020 Time : 15:15
        # Removed unnecessary flags
 
 
@@ -91,13 +96,18 @@ namespace linear
     // Value for default alpha
     const double DEFAULT_ALPHA  = 0.01;
 
-    // Value for defualt iterations (maximum)
+    // Value for default iterations (maximum)
     const int DEFAULT_MAXIMUM_ITERATIONS = 100;
 
     // Value for default tolerance
     const double DEFAULT_TOLERANCE = 0.0001;
 
 
+}
+// Namespace for different math related constants
+namespace math
+{
+    constexpr double PI  =3.141592653589793238463;
 }
 
 namespace array
