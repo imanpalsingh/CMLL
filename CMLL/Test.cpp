@@ -6,7 +6,7 @@
  
  * Date Created  : FEB_9_20_11_32
  
- * Last modified : MAR_19_20_23_30
+ * Last modified : MAR_26_20_21_30
  
  * Tested version : 0.0.0
  
@@ -18,6 +18,8 @@
 #include"utils/util.hpp"
 #include"Numerical/Numeric.hpp"
 #include"Linear/Linear.hpp"
+#include"Bayes/NaiveBayes.hpp"
+#include"Data/DataHandler.hpp"
 
 
 int main()
@@ -25,32 +27,35 @@ int main()
 
   //Defining data
 
-   cmll::data::STORAGE X = { {199,14.31,123,13.33},
+    cmll::data::STORAGE X = { {199,14.31,123,13.33},
                             {199,12,2,12},
                             {1,23,556,12},
                             {67,1.1,2.88,121},
                             {123,122,1,34},
                             {12,344,12,12},
                             {23,23,22,12}};
-
-   cmll::data::STORAGE y = { {0},
+     cmll::data::STORAGE y = { {0},
                             {1},
                             {0},
                             {0},
                             {1},
                             {0},
                             {1}};
-  // Creating a logistic Regression model
+  
+  // Creating a Naive Bayes Gaussian model
+  cmll::bayes::NaiveBayes nb;
 
-  cmll::linear::LogisticRegression l1;
-  l1.model(X,y);
+  //Fitting the model
+   nb.model(X,y);
+   std::cout<<"Done modelling\n";
 
-  //Creating test set
-  cmll::data::STORAGE X_test = {{1,23,556,12},{67,2.88,1,12}};
+   //Predicting
+   auto y_pred = nb.predict(X);
+   std::cout<<"Done predicting\n";
 
-  //Testting the model
-  auto res =  l1.predict(X_test);
-  cmll::out::print(res);
+   //Evaluating
+   std::cout<<nb.score(y_pred,y);
+  
 
 
 
