@@ -146,9 +146,6 @@ class LinearRegression
  
        Parameters - > y_pred - > the predicted values (STORAGE element)
                      y_test - > the actual values (STORAGE element)
-                     score_type - > type of score to calculate
-                                    R^2 score (linear::R_SQUARE)
-                                    adjusted R^2 score(Linear::ADJUSTED_R_SQUARE)
        return type : double
     */
     double score(const data::STORAGE &y_pred,const data::STORAGE &y_true);

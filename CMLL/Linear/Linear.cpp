@@ -302,7 +302,7 @@ double LinearRegression::TSS(const data::STORAGE &y_true)
 
 * Function Name : score
 
-* Description : Function to score (R^2 score and adjusted R^2 score)
+* Description : Function to find score (R^2 score)
 
 * Parameters : y_pred - > the predicted values
              : y_true - > The actual values
@@ -319,8 +319,6 @@ double LinearRegression::score(const data::STORAGE &y_pred,const data::STORAGE &
     /*
     * This function uses the following formula for calculating R^square
     * R^2 = 1 - RSS/TSS
-    * 
-    * And the following formula for adjusted R square
     * 
     */
 
