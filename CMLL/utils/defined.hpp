@@ -79,7 +79,7 @@ namespace neighbor
     // Default order (p)
     const double DEFAULT_P = 2;
     
-    /* Flags defining the selection of the distance metrix */
+    /* Flags defining the selection of the distance metric */
     const short EUCLIDEAN = 0;
     const short MANHATTAN = 1;
     const short MINKOWSKI = 2;
@@ -118,6 +118,9 @@ namespace linear
 
     // Value for default tolerance
     const double DEFAULT_TOLERANCE = 0.0001;
+
+    // default value for lambda (penalty)
+    const double DEFAULT_LAMBDA = 1;
 
 
 }
