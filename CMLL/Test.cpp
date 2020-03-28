@@ -6,7 +6,7 @@
  
  * Date Created  : FEB_9_20_11_32
  
- * Last modified : MAR_26_20_21_30
+ * Last modified : MAR_28_20_14_25
  
  * Tested version : 0.0.0
  
@@ -17,46 +17,32 @@
 #include"utils/defined.hpp"
 #include"utils/util.hpp"
 #include"Numerical/Numeric.hpp"
-#include"Linear/Linear.hpp"
-#include"Bayes/NaiveBayes.hpp"
 #include"Data/DataHandler.hpp"
+#include"Neighbor/KNN.hpp"
 
 
 int main()
 {
 
-  //Defining data
+  // Loading data
+  auto dataset = cmll::csv::read("Dataset.csv");
 
-    cmll::data::STORAGE X = { {199,14.31,123,13.33},
-                            {199,12,2,12},
-                            {1,23,556,12},
-                            {67,1.1,2.88,121},
-                            {123,122,1,34},
-                            {12,344,12,12},
-                            {23,23,22,12}};
-     cmll::data::STORAGE y = { {0},
-                            {1},
-                            {0},
-                            {0},
-                            {1},
-                            {0},
-                            {1}};
+  // Creating the feature matrix and vector of prediction
+  auto X = dataset[cmll::list::range(0,7)].get();
+  auto y = dataset[-1].get();
   
-  // Creating a Naive Bayes Gaussian model
-  cmll::bayes::NaiveBayes nb;
-
+  // Creating a Knn Classifier  model
+  cmll::neighbor::KnnClassifier clf;
+  
   //Fitting the model
-   nb.model(X,y);
-   std::cout<<"Done modelling\n";
-
-   //Predicting
-   auto y_pred = nb.predict(X);
-   std::cout<<"Done predicting\n";
-
-   //Evaluating
-   std::cout<<nb.score(y_pred,y);
+  clf.model(X,y);
   
+  //Predicting
+  auto y_pred = nb.predict(X);
+     
+  // Evaluation
+  std::cout<<nb.score(y_pred,y);
 
-
-
+  return 0;
+  
 }
