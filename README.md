@@ -23,10 +23,12 @@ Data handling includes : Data extraction, loading, preprocessing
 <h4>2) Model creation </h4>
 The library supports creation of following models :
 <h5> Regression </h5>
-(i) Linear Regression 
+(i) Linear Regression <br> 
+(ii) K-Nearest Neighbors Regressor
 <h5> Classification </h5>
 (i) Logistic Regression<br>
-(ii) Naive Bayes Classifier
+(ii) Naive Bayes Classifier<br>
+(iii) K-Nearest Neighbors Classifier<br>
 
 <h3> Documentation </h3>
 The documentation for CMLL is available at https://github.com/imanpalsingh/CMLL/wiki 
