@@ -26,11 +26,13 @@
 
 * Change Logs : 
 
+    1) Date : 228-03-20 Time :22:31
+      Added new class RidgeClassifier
     
-    1) Date : 28-03-20 Time : 18:19
+    2) Date : 28-03-20 Time : 18:19
       Added new class RidgeRegression
     
-    2) Date : 23-03-20 Time : 17:05
+    3) Date : 23-03-20 Time : 17:05
       LinearRegression class (0.0.1 - > 0.0.2)
       # New attribute added : Features
       
@@ -51,12 +53,12 @@
 
 
     
-    3) Date : 22-03-20 Time : 14:05
+    4) Date : 22-03-20 Time : 14:05
       LinearRegression class (0.0.0 - > 0.0.1)
       # Linear Regression Now fully implements ELS method
       # New functions in LinearRegression RSS(),TSS(), score()
 
-    4) Date : 21-03-2020 Time : 23:03
+    5) Date : 21-03-2020 Time : 23:03
       Function LogisticRegression::model (0.0.1 - > 0.0.2)
       # Function logistic regression now creates a lesser dimensional identity matrix (more information at function line comments)
       # Logistic regression now is even more faster than 0.0.1
@@ -64,7 +66,7 @@
 
       ## Added a new function score()
 
-    5) Date : 20-03-2020 Time : 22:23
+    6) Date : 20-03-2020 Time : 22:23
       Function LogisticRegression::model (0.0.0 - > 0.0.1) 
       # Function now uses matrix::inverse_diagonal() instead of matrix::diagonal for calculating inverse of diagonal matrix 'W'
       # LogisticRegression::model now is faster at fitting
@@ -94,6 +96,9 @@ namespace cmll
 
   namespace linear
   {
+
+
+    /* Note : The Regression modules assume that every row has 1 in the first place. That is a column of 1's is the first column in the Feature Matrix */ 
 
     /*
     *
@@ -276,9 +281,9 @@ namespace cmll
     /*
     *
 
-    * Class Name : Lasso
+    * Class Name : RidgeRegression
 
-    * Description : Class for creation of Lasso Regression models, Predicting values.
+    * Description : Class for creation of RidgeRegression, Predicting values.
 
     * Functions : model[overridden], predict()[inherited] TSS()[inherited], RSS()[inherited], score()[inherited]
 
@@ -301,12 +306,72 @@ namespace cmll
         Method : ELS - > Taken from Elements of Statistical learning Book (deployed)
       
         The coefficients calculated are stored in coefficients STORAGE element
+        NOte : Fit interceot is not automatically done.
 
         Parameters - > Feature matrix X 
                       Prediction matrix/vector y
         return type : int -> status of model built (-1 for error)
         */
         int model(const data::STORAGE&,const data::STORAGE&);
+    };
+
+    /*
+    *
+
+    * Class Name : RidgeClassifier
+
+    * Description : Class for creation of RidgeClassifier, Predicting values.
+
+    * Functions : model[overridden], predict()[overriden] TSS()[forbiden], RSS()[forbiden], score()[overriden]
+
+    * Class version : 0.0.0
+
+    *
+    */
+    class RidgeClassifier : public RidgeRegression
+    {
+      
+      protected:
+
+      /*
+      Function to encode variables as -1 and 1. 
+      Note : Only binary labelling is suported yet
+      return type : STORAGE
+      */
+      data::STORAGE __encode__(const data::STORAGE &y);
+      using RidgeRegression::RSS;
+      using RidgeRegression::TSS;
+
+      
+      public :
+      /*
+        Function to construct the supervised learning model for Ridge Regression 
+        Method : ELS - > Taken from Elements of Statistical learning Book (deployed)
+      
+        The coefficients calculated are stored in coefficients STORAGE element
+        NOte : Fit interceot is not automatically done.
+
+        Parameters - > Feature matrix X 
+                      Prediction matrix/vector y
+        return type : int -> status of model built (-1 for error)
+        */
+        int model(const data::STORAGE&,data::STORAGE&);
+        
+        /*
+        Function predict for new feature matrix based on coefficients calculated during model creation.
+        Note :  This classifier manually encodes labels to -1 and 1. Thus only binary classification is support yet.
+        return type : STORAGE
+        */
+        data::STORAGE predict(const data::STORAGE &X_test);
+
+        /*
+        Function to calculate score of the model built
+        Note :  This function uses standard Indicator function.
+        return type : double
+        */
+       double score(const data::STORAGE &y_pred,const data::STORAGE &y_true);
+       
+      
     };
     
 

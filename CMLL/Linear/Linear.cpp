@@ -83,7 +83,7 @@ namespace cmll
 
     namespace linear
     {
-
+        /* Note : The Regression modules assume that every row has 1 in the first place. That is a column of 1's is the first column in the Feature Matrix */ 
 
 
         /*
@@ -100,6 +100,7 @@ namespace cmll
                         -1 - >  Error
 
         * Function Version : 0.0.2
+        
 
         * Goals of Implementation  :  Expect Multithreading being used in this function in version 1.0
 
@@ -139,8 +140,8 @@ namespace cmll
             /* Initializations */ //
             auto X_T = matrix::create(Features,observations);
             auto X_T_mul_y = matrix::create(Features,1);
-            auto X_T_mul_X = matrix::create(Features,observations);
-            auto X_T_mul_X_inverse  = matrix::create(Features,observations);
+            auto X_T_mul_X = matrix::create(Features,Features);
+            auto X_T_mul_X_inverse  = matrix::create(Features,Features);
 
 
             try
@@ -198,12 +199,6 @@ namespace cmll
                 
             }
 
-            // Making sure that the X_test has required number of features
-            else if(!util::is_legal(X_test,Features))
-            {
-                std::cout<<"<IN function LinearRegression::predict> Error : The model was trained with "<<Features<<" features but predict received different number of features\n";
-                return result;
-            }
             
             else
             {
@@ -782,7 +777,7 @@ namespace cmll
         * Return : (int) 0 - > successful
                         -1 - >  Error
 
-        * Function Version : 0.0.2
+        * Function Version : 0.0.0
 
         * Goals of Implementation  :  Expect Multithreading being used in this function in version 1.0
 
@@ -818,7 +813,7 @@ namespace cmll
 
             /* Initializations */ //
             auto X_T = matrix::create(Features,observations);
-            auto X_T_mul_X = matrix::create(Features,observations);
+            auto X_T_mul_X = matrix::create(Features,Features);
             auto X_T_mul_y = matrix::create(Features,1);
             auto lambda_I = matrix::create_diagonal(Features,Lambda);
             auto X_T_mul_X_plus_lambda_I = matrix::create_diagonal(Features);
@@ -851,6 +846,170 @@ namespace cmll
             }
 
         }
+        /*
+        *
+
+        * Function Name : encode
+
+        * Description : Function to encode the labels to -1 and 1
+
+        * Parameters : y - >  Vector of prediction
+
+        * Return : ]result - > encoded labels
+
+        * Function Version : 0.0.0
+        *
+        */
+        data::STORAGE RidgeClassifier::__encode__(const data::STORAGE &y)
+        {
+            /* The 0 values are encoded into -1 and 1 value is encoded into 1 */
+            
+            
+            data::STORAGE result = matrix::create(y.size(),y[0].size(),1);
+            
+            for(std::size_t row=0;row<y.size();row++)
+            {
+                for(std::size_t col=0;col<y[row].size();col++)
+                {
+                    if(y[row][col] == 0) result[row][col] = -1;
+
+                    
+                    else if(y[row][col] != 1)
+                    {
+                        std::cout<<"<In [protected]RidgeClassifier::__encode__()> Error : Expected binary class.\n";
+                        continue;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /*
+        *
+
+        * Function Name : model
+
+        * Description : Function to find coefficient matrix 
+
+        * Parameters : X - > Feature Matrix
+                    : y - >  Vector of prediction
+
+        * Return : (int) 0 - > successful
+                        -1 - >  Error
+
+        * Function Version : 0.0.0
+
+        * Goals of Implementation  :  Expect Multithreading being used in this function in version 1.0
+
+        *
+        */
+        int RidgeClassifier::model(const data::STORAGE &X,data::STORAGE &y)
+        {
+           /*
+           This model function uses the encoded labels to call RidgeRegression's model function.
+           Refer to RidgeRegression::model comments for more information 
+           */
+           
+           auto y_encoded =  __encode__(y);
+           RidgeRegression::model(X,y_encoded);
+
+            return 0;
+
+        }
+        /*
+        *
+
+        * Function Name : predict
+
+        * Description : Function to predict labels for new feature matrix
+
+        * Parameters : X_test - > the new feature matrix to predict values on
+
+        * Note :   Only binary classification supported yet
+        * 
+        * Function Version : 0.0.0
+
+        *
+        */
+
+        data::STORAGE RidgeClassifier::predict(const data::STORAGE &X_test)
+        {
+            /*
+            The X_test observations are predicted using the RidgeRegression model()
+            The obtained result is decoded from {-1,1} to {0,1}
+            */
+            
+            
+            auto result = LinearRegression::predict(X_test);
+
+            for(std::size_t row=0;row<result.size();row++)
+            {
+                for(std::size_t col=0;col<result[row].size();col++)
+                {
+                    if(result[row][col] > 0 )
+                    {
+                        result[row][col] = 1;
+                    }
+
+                    else 
+                    {
+                        result[row][col] = 0;
+                    }
+                }
+            }
+
+            return result;
+            
+        }
+
+        /*
+        *
+
+        * Function Name : score
+
+        * Description : Function to calculate core of the model built
+
+        * Parameters : y_pred - > the predicted values
+                    y_test - > the actual values
+
+        * Function Version : 0.0.0
+
+        *
+        */
+
+        double RidgeClassifier::score(const data::STORAGE &y_pred,const data::STORAGE &y_true)
+        {
+            
+        //Checking for equal number of observations
+            if(y_pred.size()!=y_true.size())
+            {
+                std::cout<<"<In function LogisticRegression::score> Error : y_pred.size() ! = y_true.size().\n";
+                return -1;
+            }
+
+
+            //Variable to hold the score
+            double accuracy;
+
+            // For each predicted and real value
+            for(int i=0;i<y_pred.size();i++)
+            {
+                for(int j=0;j<y_pred[0].size();j++)
+                {
+                    if(y_pred[i][j] == y_true[i][j])
+                    {
+                    //calculate number of times the model was correct
+                        accuracy++; 
+                    }
+                }
+            }
+            
+            
+            //number of times the model was correct/total observations
+            return (accuracy/y_pred.size());
+        }
+
 
 
 
