@@ -69,6 +69,23 @@ namespace data
     
 }
 
+// Namespace for Neighbor related models
+namespace neighbor
+{
+    
+    // Default number of neighbors
+    const std::size_t DEFAULT_K = 4;
+
+    // Default order (p)
+    const double DEFAULT_P = 2;
+    
+    /* Flags defining the selection of the distance metrix */
+    const short EUCLIDEAN = 0;
+    const short MANHATTAN = 1;
+    const short MINKOWSKI = 2;
+
+}
+
 // Namespace for different flags of Linear Models
 namespace linear
 {
