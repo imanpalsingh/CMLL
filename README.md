@@ -5,7 +5,7 @@
 CMLL is a Machine Learning Library for C++ that is build from scratch using just C++ 17and uses the C++17's STL. The matrix and other computational requirements are also written from scratch. The aim of this library is to provide easier creation, manipulation and deployment of Machine Learning models in C++.
 
 <h3> Description </h3> 
-This project is orignally my submission of 'Minor Project' for 6th semester,Computer Science Engineering. It is still in deveopment phase and isn't yet implemented as a functional library. The modules are being deveopled and will be added.
+This project is orignally my submission of 'Minor Project' for 6th semester,Computer Science Engineering. It is still in deveopment phase and isn't yet implemented as a functional library. The modules are being developled and will be added.
 
 <h3> Current Goals </h3>
 The goals of this library are
@@ -25,7 +25,8 @@ The library supports creation of following models :
 <h5> Regression </h5>
 (i) Linear Regression 
 <h5> Classification </h5>
-(i) Logistic Regression
+(i) Logistic Regression<br>
+(ii) Naive Bayes Classifier
 
 <h3> Documentation </h3>
 The documentation for CMLL is available at https://github.com/imanpalsingh/CMLL/wiki 
