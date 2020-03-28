@@ -20,7 +20,7 @@
 
 * The contents of the program are distributed with versions numbers. If a particular function or content fails to execute, replace it with previous version from the backup folder.
 
-* Date Created  : FEB_24_20_11_04
+* Date Created  : MAR_24_20_11_04
  
 * Last modified : MAR_24_20_11_05
 
@@ -314,7 +314,7 @@ namespace cmll
          //Checking for equal number of observations
          if(y_pred.size()!=y_true.size())
          {
-            std::cout<<"<In function LogisticRegression::score> Error : y_pred.size() ! = y_true.size().\n";
+            std::cout<<"<In function NaiveBayes::score> Error : y_pred.size() ! = y_true.size().\n";
             return -1;
          }
 
