@@ -18,30 +18,33 @@
 #include"utils/util.hpp"
 #include"Numerical/Numeric.hpp"
 #include"Data/DataHandler.hpp"
-#include"Neighbor/KNN.hpp"
+#include"Linear/linear.hpp"
 
 
 int main()
 {
 
   // Loading data
-  auto dataset = cmll::csv::read("Dataset.csv");
+  auto dataset = cmll::csv::read("Salary.csv");
 
   // Creating the feature matrix and vector of prediction
-  auto X = dataset[cmll::list::range(0,7)].get();
+  auto X = dataset[{3,4,5}].get();
   auto y = dataset[-1].get();
   
   // Creating a Knn Classifier  model
-  cmll::neighbor::KnnClassifier clf;
+  cmll::linear::LinearRegression reg;
   
+  std::cout<<"Fitting the model\n";
   //Fitting the model
-  clf.model(X,y);
+  reg.model(X,y);
   
+  std::cout<<"Predicting\n";
   //Predicting
-  auto y_pred = nb.predict(X);
-     
+  auto y_pred = reg.predict(X);
+
+  std::cout<<"Evaluating\n";   
   // Evaluation
-  std::cout<<nb.score(y_pred,y);
+  std::cout<<reg.score(y_pred,y);
 
   return 0;
   
