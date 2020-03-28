@@ -99,7 +99,6 @@ namespace cmll
 
            /*
             Function to predict using KNN technique
-            Note : The function  uses euclidean distance. More distance metrics to be added in future versions.
             Parameters : X_test - > Test feature matrix
             return type : STORAGE
            */
@@ -107,7 +106,6 @@ namespace cmll
             
             /*
              Function to calculate distances from observations in Feature matrix to a new observation matrix
-             Note : The function  uses euclidean distance. More distance metrics to be added in future versions.
              Parameters : x - > The new observation
              return type : std::vector<double>
             */
@@ -164,7 +162,6 @@ namespace cmll
 
                 /*
                 Function to predict using KNN technique
-                Note : The function  uses euclidean distance. More distance metrics to be added in future versions.
                 Parameters : X_test - > Test feature matrix
                 return type : STORAGE
                 */

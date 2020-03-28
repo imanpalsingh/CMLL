@@ -93,6 +93,11 @@ namespace cmll
          */
         int KnnRegressor::model(const data::STORAGE &X,const data::STORAGE &y)
         {
+            
+            /* The Knn model function saves the Feature matrix and vector of prediction upon model creation. Contradictory name, it is actually a 
+            instance based algorithm rather than a model based one
+            */
+            
             //Storing the feature matrix and vector of prediction
             Feature_matrix = X;
             Vector_of_prediction = y;
@@ -165,8 +170,17 @@ namespace cmll
          */
         data::STORAGE KnnRegressor::predict(const data::STORAGE &X_test)
         {
+           /*
+           Steps of the algorithm
+
+           1) All the data points are loaded into memory (brute force approach currently).
+           2) Distances using different distance metric (in Distance_metric) from the new test observation are calculated and stored.
+           3) The distances are sorted 
+           4) Based on the value of k (in K). The first k values of the sorted distances are kept. Rest are removed from the memory
+           5) The mean of the y of the positions determines the predicted value
+           */
            
-            // Storage vector to store sorted distances
+           // Storage vector to store sorted distances
             data::STORAGE result;
            
             // Sum of the labels
@@ -208,9 +222,7 @@ namespace cmll
          * Parameters : X -> the new observation
 
          * Return : result : The distances calculated.
-         
-         * Note :  This function currrently calculates distance using euclidean metric. More metric to be added in future versions 
-         
+                  
          * Function Version : 0.0.0
 
          *
@@ -411,6 +423,16 @@ namespace cmll
          */
         data::STORAGE KnnClassifier::predict(const data::STORAGE &X_test)
         {
+           
+            /*
+           Steps of the algorithm
+
+           1) All the data points are loaded into memory (brute force approach currently).
+           2) Distances using different distance metric (in Distance_metric) from the new test observation are calculated and stored.
+           3) The distances are sorted 
+           4) Based on the value of k (in K). The first k values of the sorted distances are kept. Rest are removed from the memory
+           5) The mode of the y of the positions determines the predicted value
+           */
            
             // Storage vector to store sorted distances
             data::STORAGE result;
