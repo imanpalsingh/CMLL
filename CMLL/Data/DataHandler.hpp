@@ -16,15 +16,19 @@
 
 * Project version : 0.0.0
 
-* File version : 0.0.0
+* File version : 0.0.1
 
 * The contents of the program are distributed with versions numbers. If a particular function or content fails to execute, replace it with previous version from the backup folder.
 
 * Date Created  : FEB_8_20_21_12
  
-* Last modified : MAR_16_20_23_12
+* Last modified : MAR_28_20_22_21
 
-* Change Logs : NONE
+* Change Logs : 
+
+        1) Date : 28-03-20 Time : 22:21
+        Handler class
+            #Added new function insert ( 2 overloads)
 
 *
 */
@@ -120,6 +124,22 @@ class Handler
    
    
     public:
+
+    /*
+    Function to insert a column in the Handler object.
+    Parameters : position : Position at which to insert he column
+                elements : elements of the column to insert
+    return type: int
+    */
+    int insert(const std::size_t &position,const double &elements);
+    /*
+    Function to insert a value as a new column in the Handler object.
+    Parameters : position : Position at which to insert he column
+                element : value to be inserted in the entire new column
+    return type: int
+    */
+    int insert(const std::size_t &position,const std::vector<double> &elements);
+    
 
     /// Utilities ///
 
