@@ -22,6 +22,8 @@ The library currently supports following features
 Data handling includes : Data extraction, loading, preprocessing
 <h4>2) Model creation </h4>
 The library supports creation of following models :
+
+<h5> Supervised Learning </h5>
 <h5> Regression </h5>
 (i) Linear Regression <br> 
 (ii) Ridge Regression<br>
@@ -31,6 +33,10 @@ The library supports creation of following models :
 (ii) Naive Bayes Classifier<br>
 (iii) K-Nearest Neighbors Classifier<br>
 (iv) Ridge Classifier
+<br>
+<h5> Unsupervised Learning </h5>
+<h5> Clustering</h5>
+(i) K-Means clustering
 
 <h3> Documentation </h3>
 The documentation for CMLL is available at https://github.com/imanpalsingh/CMLL/wiki 
