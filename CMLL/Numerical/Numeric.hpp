@@ -62,13 +62,16 @@
 
 
 #ifndef NUMERIC_HPP
-#define NIMERIC_HPP
+#define NUMERIC_HPP
 
 #include<iostream>
 #include<vector>
 #include<tuple>
 #include<cmath>
 #include"../utils/defined.hpp"
+#include <functional> 
+
+
 
 
 /* N A M E S P A C E S */

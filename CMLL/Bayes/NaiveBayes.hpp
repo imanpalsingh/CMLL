@@ -34,6 +34,9 @@
 #define NB_HPP
 
 #include "../utils/defined.hpp"
+#include<iostream>
+#include"../utils/util.hpp"
+#include"../Numerical/Numeric.hpp"
 
 
 // Global namespace

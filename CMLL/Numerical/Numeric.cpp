@@ -60,11 +60,6 @@
 *
 */
 
-#include<iostream>
-#include<vector>
-#include <functional> 
-#include <tuple>
-
 // Version 0.0.0
 #include"Numeric.hpp"
 

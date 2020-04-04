@@ -85,7 +85,9 @@
 #ifndef LINEAR_HPP
 #define LINEAR_HPP
 
+#include "../Numerical/Numeric.hpp"
 #include "../utils/defined.hpp"
+#include "../utils/util.hpp"
 
 
 

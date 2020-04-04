@@ -29,11 +29,10 @@
 *
 *
 */
-#include<tuple>
-#include "defined.hpp"
-#include"../Numerical/Numeric.hpp"
-#include<vector>
-#include<iostream>
+
+
+#include"util.hpp"
+
 namespace cmll
 {
     namespace util

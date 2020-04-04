@@ -57,6 +57,12 @@
 
 #include"../utils/defined.hpp"
 
+#include<stdio.h>
+
+// File stream
+#include<fstream>
+
+
 
 
 namespace cmll

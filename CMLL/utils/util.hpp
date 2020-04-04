@@ -30,12 +30,16 @@
 *
 */
 
-#include<tuple>
-#include "defined.hpp"
-#include<vector>
 
 #ifndef UTIL_HPP
 #define UTIL_HPP
+
+
+#include<tuple>
+#include "defined.hpp"
+#include<vector>
+#include"../Numerical/Numeric.hpp"
+#include<iostream>
 
 namespace cmll
 {

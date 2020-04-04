@@ -46,24 +46,11 @@
 *
 */
 
-// Standard I/O stream
-#include<iostream>
-#include<stdio.h>
 
-// File stream
-#include<fstream>
-
-// Arrays
-#include<array>
-
-// Vectors 
-#include<vector>
 
 // Datahandler declarations header (version 0.0.0)
 #include"DataHandler.hpp"
 
-// Type definitions header (version 0.0.0)
-#include"../utils/defined.hpp"
 
 
 

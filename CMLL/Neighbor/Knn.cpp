@@ -7,7 +7,7 @@
 
 *   File title : File containing declarations for algorithms using Neighbor distance method
 
-*   Description : This File includes the classifiers that use Neighbor distance method
+*   Description : This File includes the supervised algorithms that use Neighbor distance method
 *
 */
 
@@ -32,7 +32,6 @@
 
 #include<algorithm>
 #include<iostream>
-#include<math.h>
 #include<map>
 
 #include"../utils/util.hpp"

@@ -63,11 +63,9 @@
 
 /* Imports */
 
-#include<iostream>
+
 #include "Linear.hpp"
-#include "../Numerical/Numeric.hpp"
-#include "../utils/defined.hpp"
-#include "../utils/util.hpp"
+
 
 
 

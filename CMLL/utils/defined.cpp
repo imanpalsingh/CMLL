@@ -39,11 +39,6 @@
 */
 
 
-#include<vector>
-#include<iostream>
-#include<tuple>
-#include"defined.hpp"
-
 
 /* NAMESPACES */
 

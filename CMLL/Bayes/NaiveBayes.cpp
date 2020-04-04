@@ -30,10 +30,7 @@
 */
 
 #include"NaiveBayes.hpp"
-#include<iostream>
-#include"../utils/defined.hpp"
-#include"../utils/util.hpp"
-#include"../Numerical/Numeric.hpp"
+
 
 
 //Parent namespace
