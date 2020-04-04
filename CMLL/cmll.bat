@@ -4,7 +4,7 @@ ECHO CMLL EXECUTABLE SCRIPT - Imanpal Singh
 :start
 ECHO ---------------------------------------------------
 ECHO Compiling . . .
-g++ Test.cpp Linear/Linear.cpp utils/defined.cpp Numerical/Numeric.cpp utils/util.cpp Bayes/NaiveBayes.cpp Data/DataHandler.cpp Neighbor/Knn.cpp -o main -std=c++17
+g++ Test.cpp Linear/Linear.cpp utils/defined.cpp Numerical/Numeric.cpp utils/util.cpp Bayes/NaiveBayes.cpp Data/DataHandler.cpp Neighbor/Knn.cpp Neighbor/KMeans.cpp -o main -std=c++17
 ECHO:
 ECHO:__________________________________________________
 ECHO:
