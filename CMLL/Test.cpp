@@ -14,40 +14,29 @@
  */
 
 #include<iostream>
-#include"utils/defined.hpp"
-#include"utils/util.hpp"
-#include"Numerical/Numeric.hpp"
+
 #include"Data/DataHandler.hpp"
-#include"Linear/linear.hpp"
+#include"Neighbor/KMeans.hpp"
+#include"Neighbor/Knn.hpp"
+#include"Numerical/Numeric.hpp"
+#include"Linear/Linear.hpp"
 
 
 int main()
 {
 
   // Loading data
-  auto dataset = cmll::csv::read("Dataset.csv");
+  auto dataset = cmll::csv::read("Salary.csv");
 
-  dataset.insert(0,1);
-
-  // Creating the feature matrix and vector of prediction
-  auto X = dataset[cmll::list::range(0,8)].get();
+  auto X = dataset[{3,4,5}].get();
   auto y = dataset[-1].get();
   
-  // Creating a Knn Classifier  model
-  cmll::linear::RidgeClassifier reg;
-  
-  std::cout<<"Fitting the model\n";
-  //Fitting the model
-  reg.model(X,y);
-  
-  std::cout<<"Predicting\n";
-  //Predicting
-  auto y_pred = reg.predict(X);
+  // Creating a KMeans model
+  cmll::linear::LinearRegression k;
+  k.model(X,y);
 
-  std::cout<<"Evaluating\n";   
-  // Evaluation
-  std::cout<<reg.score(y_pred,y);
-
+  auto y_pred = k.predict(X);
+  std::cout<<k.score(y,y_pred);
 
   return 0;
   
