@@ -1,29 +1,29 @@
 # CMLL
-<h2> CMLL : C++'s Machine Learning Library (version 0.0.0) </h2>
+<h1> CMLL : C++'s Machine Learning Library (version 0.0.0) </h1>
 
-<h3> Introduction </h3>
+<h2> Introduction </h2>
 CMLL is a Machine Learning Library for C++ that is build from scratch using just C++ 17and uses the C++17's STL. The matrix and other computational requirements are also written from scratch. The aim of this library is to provide easier creation, manipulation and deployment of Machine Learning models in C++.
 
-<h3> Description </h3> 
+<h2> Description </h2> 
 This project is orignally my submission of 'Minor Project' for 6th semester,Computer Science Engineering. It is still in deveopment phase and isn't yet implemented as a functional library. The modules are being developled and will be added.
 
-<h3> Current Goals </h3>
+<h2> Current Goals </h2>
 The goals of this library are
-<h4>1) Data preprocessing in C++ </h4>
+<h3>1) Data preprocessing in C++ </h3>
 Priovide data preprocessing tools for data cleaning and other manipulation and extraction techniques.
-<h4>2) Data visualization </h4>
+<h3>2) Data visualization </h3>
 With the help of OpenGL provide 2-dimensional and 3-dimensional visualization of datasets,models etc.
-<h4>3) Model creation </h4>
+<h3>3) Model creation </h3>
 Creation of various machine learning models and their deployment with high level api format along with the full controllability.
 
-<h3> Current Functionalities </h3>
+<h2> Current Functionalities </h2>
 The library currently supports following features
 <h4>1) Data handling </h4>
 Data handling includes : Data extraction, loading, preprocessing
 <h4>2) Model creation </h4>
 The library supports creation of following models :
 
-<h5> Supervised Learning </h5>
+<h4> Supervised Learning </h4>
 <h5> Regression </h5>
 (i) Linear Regression <br> 
 (ii) Ridge Regression<br>
@@ -34,7 +34,7 @@ The library supports creation of following models :
 (iii) K-Nearest Neighbors Classifier<br>
 (iv) Ridge Classifier
 <br>
-<h5> Unsupervised Learning </h5>
+<h4> Unsupervised Learning </h4>
 <h5> Clustering</h5>
 (i) K-Means clustering
 
