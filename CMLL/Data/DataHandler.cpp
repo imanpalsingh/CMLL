@@ -14,29 +14,37 @@
 *
 */
 
-
 /*
 *
 
 * Project version : 0.0.0
 
-* File version : 0.0.1
+* File version : 0.0.3
 
 * The contents of the program are distributed with versions numbers. If a particular function or content fails to execute, replace it with previous version from the backup folder.
 
 * Date Created  : FEB_8_20_21_12
  
-* Last modified : APR_05_20_19_35
+* Last modified : APR_06_20_14_33
 
 * Change Logs : 
 
+ 
+        1) Date : 06-04-2020 Time : 14:33 [ VERSION 0.0.1]
+        Namespace data
+        # Added new function read_all
+        # Multi type file, categorical data now can be loaded using read_all which will automatically label encode non numeric data and assign Nan to missing values
         
-        1) Date : 05-04-2020 Time : 19:36
+        Handler class
+        # Added new attribute Encoded to store the Label encoding
+        # function clear now also clears the Encoded attribute
+
+        2) Date : 05-04-2020 Time : 19:36
         Namespace data
         # function insert is now a member of data namespace and a friend of Handler class
         # Function read now accepts mandatory column names and stores them separately.
         # Function read can now prompt for missing values in the column names row
-        # Function read now reports for missing values by invalid structure of file. 
+        # Function read now prompts for missing values by invalid structure of file. 
         
         Robust exceptional handling implemented
 
@@ -44,7 +52,7 @@
         # Extraction operator << is now overload for cout
         # Subscript operator [] now also accepts either column name(string) or vector of column name(vector<string>) as parameter
         
-        2) Date : 04-04-2020 Time : 23:15
+        3) Date : 04-04-2020 Time : 23:15
         #Handler and functions under file namespace are moved to a new common namespace data
         #Added a new function read_columns under the namspace data
         
@@ -55,13 +63,12 @@
             #Negative indexing is now supported in all overloads
         
 
-        3) Date : 28-03-20 Time : 22:21
+        4) Date : 28-03-20 Time : 22:21
         Handler class
             #Added new function insert ( 2 overloads)
 
 *
 */
-
 
 
 /*
@@ -87,12 +94,40 @@ namespace cmll
     namespace data
     {
     
+        
+        /*
+        *
+
+        * Constructor Name : Handler
+
+        * Description : Default constrctor defined
+
+        * Paramteres :  None
+
+        * Constructor Version : 0.0.0
+
+        *
+        */
         Handler::Handler()
         {
         
         }
 
-        Handler::Handler(const data::STORAGE &dataset, const std::vector<std::string> &column_names)
+        /*
+        *
+
+        * Constructor Name : Handler
+
+        * Description : constructor to load defaults
+
+        * Paramteres :  dataset -> THe vector of vectors (STORAGE)
+                        column_names - > Name of columns in order
+
+        * Constructor Version : 0.0.0
+
+        *
+        */
+        Handler::Handler(const STORAGE &dataset, const std::vector<std::string> &column_names)
         {
             Dataset = dataset;
             Columns = column_names;
@@ -197,11 +232,10 @@ namespace cmll
                     : line_seperator - > The delimeter which separates lines (default '\n') 
         * Return : Object of the class Handler
 
-        * Function Version : 0.0.0
-
-        * Goal of Implementations : A user defined line break delimeter ( Version 1.0)
-
-        * Note since xlxs files are binary format the cannot be opened with read(), expect a separate function for those files in version 1.0
+        * Function Version : 0.0.1
+        
+        * NOTE : Except for the Column names row all other rows should only contain , int,float or double types
+        * since xlxs files are binary format the cannot be opened with read(), expect a separate function for those files in version 1.0
 
         *
         */
@@ -238,7 +272,7 @@ namespace cmll
                 // If not successfull
             if(!_file)
             {
-                    throw std::runtime_error("Error :  Cannot access file. Either it doesn't exist or permission is required\n");
+                    throw std::runtime_error("Error :  Cannot access file. Either it doesn't exist or permission is required");
 
             }
             
@@ -250,6 +284,9 @@ namespace cmll
             
             // Extracting the column names and number o columns
             num_columns = read_columns(object,column_line,line_separator,value_separator);
+
+            //Since it was read() the Encoding is supposed to be empty but to maintain continuity
+            object.Encoded.resize(num_columns);
 
             // Reading rows
             while(_file>>data)
@@ -276,8 +313,8 @@ namespace cmll
                         if (column != num_columns)
                         {
                             
-                            std::cout<<" The Number of columns are "<<column<<". Expected were "<<num_columns<<"\n";
-                            throw std::length_error("Error : The csv format is not preserved in the file \n");
+                            std::cout<<"The Number of columns are "<<column<<". Expected were "<<num_columns<<"\n";
+                            throw std::length_error("Error : The csv format is not preserved in the file.");
                         }
 
                         // Adding the row to the final dataset
@@ -294,49 +331,279 @@ namespace cmll
                     else 
                     {
                         std::cout<<"An unspecified character '"<<character<<"' was received at row 1 column " << num_columns << " which was expected to be the delimeter '"<<value_separator<<"'\n";
-                        throw std::invalid_argument("Error : Bad shape\n");
+                        throw std::invalid_argument("Error : Bad shape.");
                     }
 
-                }
+            }
 
                 // Adding the last row to the dataset. Also checking for integrity of the format.
                 if(!data_holder.empty())
                 object.Dataset.emplace_back(data_holder);
 
-                //Closing the stream 
-                _file.close();
+                if(column!=0) throw std::runtime_error("Error : File was not read completely due to unkown error.If file contains categorical data use read_all()");
             }
 
             // Catiching all the exceptions
             catch(const std::invalid_argument &e)
             {
-                std::cerr<<ERROR_DIR<<e.what();
-                _file.close();
+                std::cerr<<ERROR_DIR<<e.what()<<'\n';
+                object.clear();
+                
                 
             }
 
             catch(const std::length_error &e)
             {
-                std::cerr<<ERROR_DIR<<e.what();
-                _file.close();
+                std::cerr<<ERROR_DIR<<e.what()<<'\n';
+                object.clear();
+                
             }
 
             catch(const std::runtime_error &e)
             {
-                std::cerr<<ERROR_DIR<<e.what();
-                _file.close();
+                std::cerr<<ERROR_DIR<<e.what()<<'\n';
+                object.clear();
+               
+            }
+            catch(const std::bad_alloc &e)
+            {
+                std::cerr<<ERROR_DIR<<"Error : Cannot allocated memory.\n";
+                object.clear();
             }
             catch(const std::exception &e)
             {
-                std::cerr<<ERROR_DIR<<e.what();
-                _file.close();
+                std::cerr<<ERROR_DIR<<e.what()<<'\n';
+                object.clear();
+              
             }
-                
+
+            _file.close();  
                 
             // Returning the object (let copy constructure handle the rest)
             return object;
 
         }
+
+        /*
+        *
+
+        * Function Name : read_all
+
+        * Description : Function to read a file and store the contents in vector of vectors of double a.k.a STORAGE (See defined.hpp for typedef).
+
+        * Parameters : filename -> The filename of the file to read.
+                    : value_separator -> The delimeter that separates different observations in thefile (default = ',') 
+                    : line_seperator - > The delimeter which separates lines (default '\n') 
+        * Return : Object of the class Handler
+
+        * Function Version : 0.0.0
+        
+        * NOTE : This function can handle non binary type values. Expect this function to be slower than read due to extra overhead
+        *        Do not use this function if your file contains only numerical values except for in the column names row.
+        * since xlxs files are binary format the cannot be opened with read(), expect a separate function for those files in version 1.0
+
+        *
+        */
+        Handler read_all(const std::string &filename,const char &line_separator,const char &value_separator)
+        {
+            /*
+            This function is useful when the file to load has values in different formats
+
+            The working of the function is at follows
+
+            1) Read the column line using read_columns function
+            2) Read each line at a time (line ends at line_separator)
+            3) split the line based on value separator to get new strings and for each string
+            4) if the new formed string can be converted into a integer then store the converted integer.
+               else store the string in a labeled vector (The label vector's index defines what label is the string mapped to)
+            5) Keep reading, do not store already stored string in the labelled vector
+            6) Fill the string spaces with the assigned label
+            7) If a row has lesser number of columns or/and missing values automatically assign NaN to get equal number of columns as in first row (column names row)
+            8) However, if number of columns exceed the number of columns in first row (column name row) throw a length error
+
+            Note : This function can handle missing/Nan/Null values in contrast to read function. However this function may be slow depending upon how many categorical values are present.
+            */
+            
+            // Handler object to return
+            Handler object;
+
+            // Error directory
+            const std::string ERROR_DIR = "<In function Handler::read_all>";
+
+            // Number of columns
+            std::size_t num_columns;
+
+            //Location to string in the encoded vector 
+            std::vector<std::string>::iterator locate;
+
+            // Temporary column holder
+            std::vector<double> data_holder;
+
+            
+            // opening the file
+            std::ifstream _file(filename);
+
+            // Variable to keep count of column to read
+            std::size_t column=0;
+            
+            try
+            {
+                if(!_file) throw std::runtime_error("Error :  Cannot access file. Either it doesn't exist or permission is required");
+
+                // Variable to sore the column names column
+                std::string column_line;
+
+                // getting the first column
+                std::getline(_file,column_line,line_separator);
+                
+                // Extracting the column names and number of columns
+                num_columns = read_columns(object,column_line,line_separator,value_separator);
+
+                // Resizing the encoded vector according to the number of columns
+                object.Encoded.resize(num_columns);
+            
+                // storing single character
+                std::string line;
+
+                // Storing the string to number converion
+                double converted_number;
+
+                // iterator for location indexing
+                std::vector<std::string>::iterator location;
+
+                // storing single value
+                std::string value; 
+
+                // Reading rest of the file line by line
+                while(std::getline(_file,line,line_separator))
+                {   
+                    
+                    column = 0;
+                    //converting to string stream
+                    std::istringstream line_stream(line);
+
+                    // For each value (seperated by value_separator)
+                    while(std::getline(line_stream,value,value_separator))
+                    {
+                        
+                        // If it is a missing value
+                        if(value=="")
+                        {
+                            //Assign Nan to it
+                            data_holder.emplace_back(std::numeric_limits<double>::quiet_NaN());
+                        }
+                        
+                        // if its not a missing value
+                        else
+                        {
+                            try
+                            {   // Trying to convert the string to number
+                                converted_number = std::stod(value);
+
+                                // If possible (or expection would have been thrown by now (std::invalid_argument) or (std::length_error)) save the number
+                                data_holder.emplace_back(converted_number);
+                            }
+                            catch(const std::invalid_argument e)
+                            {
+                                /* If the string couldn't be converted to a number, label encode it and save the encoded number
+                                 If the string already saved, discard the string and save the encoded number with the string
+                                 */
+                                
+                                // Checking if the string is already encoded 
+                                location = std::find(object.Encoded[column].begin(),object.Encoded[column].end(),value);
+
+                                // If not already encoded , encode it at assign it the encoded value
+                                if(location == object.Encoded[column].end())
+                                {
+                                    object.Encoded[column].emplace_back(value);
+                                    data_holder.emplace_back(object.Encoded[column].size()-1);
+                                }
+
+                                // If is already encoed
+                                else
+                                {
+                                    // Store already assigned label to it (i.e its index)
+                                    data_holder.emplace_back(std::distance(object.Encoded[column].begin(),location));
+                                }
+                                
+                            }
+                            catch(const std::length_error &e)
+                            {
+                                throw std::length_error(e.what());                        
+                            }
+                        }
+                        column++;
+
+                        
+                    }
+                    // If the number of columns is lesser than what it is supposed to be. Fill them with NaN value;
+                    if(column < num_columns)
+                    {
+                       while(column != num_columns)
+                       {    
+                            data_holder.emplace_back(std::numeric_limits<double>::quiet_NaN());
+                            column++;
+                       }
+                    }
+
+                    // If the number of columns exceed then what it is supposed to be. Terminate the process
+                    if(column != num_columns)
+                        {
+                            std::cout<<"The Number of columns are "<<column<<". Expected were "<<num_columns<<"\n";
+                            throw std::length_error("Error : The csv format is not preserved in the file.");
+                        }
+                        
+
+                    
+                    object.Dataset.emplace_back(data_holder);
+                    data_holder.clear();
+
+                }
+                    
+               
+            }
+            
+            
+            catch(const std::runtime_error &e)
+            {
+                std::cerr<<ERROR_DIR<<e.what()<<'\n';
+                object.clear();
+            }
+
+            catch(const std::invalid_argument &e)
+            {
+                std::cerr<<ERROR_DIR<<e.what()<<'\n';
+                object.clear();
+            }
+
+            catch(const std::length_error &e)
+            {
+                 std::cerr<<ERROR_DIR<<e.what()<<'\n';
+                 object.clear();
+            }
+
+            catch(const std::out_of_range& e)
+            {
+                 std::cerr<<ERROR_DIR<<e.what()<<'\n'; 
+                 object.clear();  
+            }
+
+            catch(const std::bad_alloc &e)
+            {
+                std::cerr<<ERROR_DIR<<"Error : Cannot allocated memory.\n";
+                object.clear();
+            }
+            catch(const std::exception &e)
+            {
+                std::cerr<<ERROR_DIR<<e.what()<<'\n';
+                object.clear();
+            }
+            
+            _file.close();
+
+            return object;
+        }
+
         
         /*
         *
@@ -354,7 +621,7 @@ namespace cmll
         *
         */
 
-        Handler create(const data::STORAGE &dataset, const std::vector<std::string> &column_names)
+        Handler create(const STORAGE &dataset, const std::vector<std::string> &column_names)
         {
             
             Handler object;
@@ -364,6 +631,9 @@ namespace cmll
 
             //Number of columns
             std::size_t cols = column_names.size();
+
+            //Resizing the encoded
+            object.Encoded.resize(cols);
 
             try
             {
@@ -381,11 +651,13 @@ namespace cmll
             catch(const std::length_error &e)
             {
                 std::cerr<<ERROR_DIR<<e.what()<<'\n';
+                object.clear();
             }
             
             catch(const std::exception& e)
             {
                 std::cerr<<ERROR_DIR<< e.what() <<"Unkown Error occurred\n";
+                object.clear();
             }
             
 
@@ -412,19 +684,26 @@ namespace cmll
         */
         void Handler::insert(std::size_t position,const std::vector<double> &elements,const std::string &column_name)
         {
+            //Error dir
             ERROR_DIR = "<In function Handler::insert>";
+            
+            //Number of columns
             std::size_t max_index = Dataset[0].size();
 
             try
             {
+               //If negative indexing is done , convert to normal indexing
                if(position < 0 ) position = max_index + position;
                
+               // If index is out of range
                if(position >= max_index) 
                {
+                   //throw exception
                    std::cout<<"Expected index less than "<<max_index<<". Got "<<position<<".";
                    throw std::length_error("Error : Position index is out of range");
                }
 
+               // For each row add the column values
                for(int row=0;row<Dataset.size();row++)
                {
                     Dataset[row].insert(Dataset[row].begin()+position,elements[row]);
@@ -441,7 +720,8 @@ namespace cmll
                    Columns.insert(Columns.begin()+position,column_name);
                }
                
-               
+               //Adding the no encoded flag
+               Encoded.insert(Encoded.begin()+position,{{}});
             }
 
             catch(const std::length_error &e)
@@ -474,19 +754,26 @@ namespace cmll
 
         void Handler::insert(std::size_t position,const double &element,const std::string &column_name)
         {
+            //Error directory
             ERROR_DIR = "<In function Handler::insert>";
+
+            // Number of columns
             std::size_t max_index = Dataset[0].size();
             
             
             try
-            {
+            {  //If negative indexing is done , convert to normal indexing
                if(position < 0 ) position = max_index + position;
                
+               // If index out of range
                if(position >= max_index) 
                {
+                   // throw exception
                    std::cout<<"Expected index less than "<<max_index<<". Got "<<position<<".";
                    throw std::length_error("Error : Position index is out of range");
                }
+
+               // for each row 
                for(int row=0;row<Dataset.size();row++)
                {
                     Dataset[row].insert(Dataset[row].begin()+position,element);
@@ -502,6 +789,9 @@ namespace cmll
                {
                    Columns.insert(Columns.begin()+position,column_name);
                }
+
+               //Adding the no encoded flag
+               Encoded.insert(Encoded.begin()+position,{{}});
 
             }
 
@@ -589,8 +879,10 @@ namespace cmll
         * Description : Function to clear the entire Handler object. Removing the dynamic memory allocated
 
         * Parameters : None
+        
         * Return  : void
-        * Function Version : 0.0.0
+        
+        * Function Version : 0.0.1
 
         *
         */
@@ -609,6 +901,12 @@ namespace cmll
 
             // Shrinking to remove allocated memory
             Columns.shrink_to_fit();
+
+            // Deleting any label encoding (if done)
+            Encoded.clear();
+
+            //Shrinking to remove allocated memory
+            Encoded.shrink_to_fit();
         }
 
         /* UTILITIES */
@@ -690,7 +988,7 @@ namespace cmll
 
         * Parameters : none
 
-        * Return : data::STORAGE (see DataHandler.hpp for typedef) variable
+        * Return : STORAGE (see DataHandler.hpp for typedef) variable
 
         * Function Version : 0.0.0
 
@@ -698,7 +996,7 @@ namespace cmll
         *
         */
 
-        data::STORAGE Handler::get() const
+        STORAGE Handler::get() const
         {
         return Dataset;
 
@@ -724,13 +1022,240 @@ namespace cmll
 
         int Handler::memory_usage() const
         {
-            // Discarding the space taken by Columns vector
+            // Discarding the space taken by Columns vector and Encoded vector
             // Each value is a double takes size_of(double) bytes
             // So a N*N handler object will take size_of(double)*n*n bytes
             return (sizeof(double)*rows()*columns());
 
         }
 
+        /*
+        *
+
+        * Function Name : show
+
+        * Description :  Function to do a pretty print of the Handler object along with additional information such as label encoded values
+
+        * Parameters : None
+
+        * Return : None
+
+        * Function Version : 0.0.0
+
+        * Note this function convers doubles to string for pretty print. Expect this function to be slow on larger datasets. using std::cout is recommended
+        *
+        */
+        void Handler::show()
+        {
+            
+
+            ERROR_DIR = "<In function Handler::show>";
+            try
+            {
+                // Dataset size
+                const std::size_t num_rows = Dataset.size();
+
+                if(!num_rows) throw std::invalid_argument("Error : Empty Handler Object.");
+
+                // Columns
+                const std::size_t num_cols = Dataset[0].size();
+                
+                
+                //Vector to hold size the elements would take on input
+                std::vector<int> Maximum_width_column(Dataset[0].size());
+
+                // Width of the output buffer
+                std::size_t width;
+
+                std::size_t row,col;
+
+
+                // Initially assuming the column names to be the maximum width required
+                for(col=0;col<num_cols;col++)
+                {
+                    Maximum_width_column[col] = Columns[col].length();
+                }
+                
+                
+                //Finding largest width for each column
+
+                // For each row 
+                for(row=0;row<num_rows;row++)
+                {
+                    //For each column
+                    for(col=0;col<num_cols;col++)
+                    {
+                        //If the column was labelled encoded
+                        if(Encoded[col].size())
+                        {
+                            //Calculate the width of the original string on the row
+                            width = Encoded[col][Dataset[row][col]].length();
+                        }
+                        // If the column wasn't label encoded
+                        else
+                        {
+                        //Calculate the width the number takes
+                        width = std::to_string(Dataset[row][col]).length();
+                        }
+                    
+                        // If the width is greater than  previously stored
+                        if( width > Maximum_width_column[col])
+                        {
+                            //Update it
+                            Maximum_width_column[col] = width;
+                        }
+                    }
+                }
+                
+                // Drawing th first line of ----'s   
+                for(col=0;col<num_cols;col++)
+                {
+                std::cout<<std::right<<std::setw(Maximum_width_column[col])<<std::setfill('-')<<'-'<<" + ";
+                }
+
+                std::cout<<'\n';
+
+
+                // Printing the columns first   
+                for(col=0;col<num_cols;col++)
+                {
+                    std::cout<<std::right<<std::setw(Maximum_width_column[col])<<std::setfill(' ')<<Columns[col]<<" | ";
+
+                }
+                std::cout<<'\n';
+
+
+                // Drawing ___'s right after column names to distinguish them
+                for(col=0;col<num_cols;col++)
+                {
+                std::cout<<std::right<<std::setw(Maximum_width_column[col])<<std::setfill('_')<<'_'<<" + ";
+                }
+                std::cout<<'\n';
+
+
+                // For each row in the dataset
+                for(row=0;row<num_rows;row++)
+                {
+                    // For each column
+                    for(col=0;col<num_cols;col++)
+                    {
+                            // If the column was label encoded
+                            if(Encoded[col].size())
+                            {
+                                // Display the original string value
+                                std::cout<<std::right<<std::setw(Maximum_width_column[col])<<std::setfill(' ')<<Encoded[col][Dataset[row][col]]<<" | ";
+                            }
+
+                            //If was not label encoded
+                            else
+                            {   
+                                // Display the numerical value
+                                std::cout<<std::right<<std::setw(Maximum_width_column[col])<<std::setfill(' ')<<Dataset[row][col]<<" | ";
+                            }
+                            
+                    }
+                    std::cout<<'\n';
+                    
+                    // After every row add extra ----'s for formatting
+                    for(col=0;col<num_cols;col++)
+                    {
+                        std::cout<<std::right<<std::setw(Maximum_width_column[col])<<std::setfill('-')<<'-'<<" + ";
+                    }
+                    std::cout<<'\n';
+
+                }
+
+                //Displaying additional information
+                std::cout<<"\nAdditional Information : \n\n";
+                encoded_details();
+
+                std::cout<<"\nNumber of row : "<<num_rows<<'\n';
+                std::cout<<"Number of columns : "<<num_cols<<'\n';
+                std::cout<<"Number of elements : "<<num_rows*num_cols<<'\n';
+                std::cout<<"Memory usage : "<<memory_usage()<<" bytes\n";
+            }
+            catch(const std::invalid_argument& e)
+            {
+                std::cerr<<ERROR_DIR<<e.what()<<'\n';
+            }
+            
+            catch(const std::exception& e)
+            {
+                std::cerr<<ERROR_DIR<<e.what()<<'\n';
+            }
+            
+
+        }
+
+        /*
+        *
+
+        * Function Name :encoded_details
+
+        * Description :  Function to show details of column encoding that was done while reading the file using read_all()
+
+        * Parameters : None
+
+        * Return : None
+
+        * Function Version : 0.0.0
+        *
+        */
+        void Handler::encoded_details()
+        {
+            
+            //if no encoding was done
+            if(!Encoded.size())
+            {
+                std::cout<<"No encoding was done.\n";
+                return;
+            }
+            
+            
+            //Displaying the label encoding that occurred
+            for(int i=0;i<Encoded.size();i++)
+            {
+                
+                if(Encoded[i].size())
+                {
+                    std::cout<<"Label Encoding of column '"<<Columns[i]<<"'.\n";
+                    for(int j=0;j<Encoded[i].size();j++)
+                    {
+                        std::cout<<Encoded[i][j]<<" : "<<j;
+                        if(j<Encoded[i].size()-1) std::cout<<", ";
+                    }
+                    std::cout<<"\n\n";
+                }
+    
+            
+            }
+        }
+
+        /*
+        *
+
+        * Function Name :get_encoded_details
+
+        * Description :  Function to return the Encoded vector
+
+        * Parameters : None
+
+        * Return : Encoded : The vector of vector of strings containing the encoded strings which enoded values as the index
+
+        * Function Version : 0.0.0
+        *
+        */
+        std::vector<std::vector<std::string>> Handler::get_encoded_details() const
+        {
+            
+            //If no encoding took place
+            if(!Encoded.size())
+            {
+                std::cout<<"<In function Handler::get_encoded_details>Warning : No encoding was done.Returned vector is empty.\n";
+            }
+
+            return Encoded;
+        }
         /*
         *
 
@@ -753,6 +1278,8 @@ namespace cmll
         {
             //Creating object to return
             Handler object;
+
+            object.Encoded.resize(indexes.size());
             
             //Error_DIR
             ERROR_DIR = "<In function operator[]>";
@@ -793,7 +1320,16 @@ namespace cmll
                             Holder.emplace_back(Dataset[row][col]);
                             
                             // Updating the new objects column vector
-                            if(row == 0) object.Columns.emplace_back(Columns[col]);
+                            if(row == 0) 
+                            {
+                                object.Columns.emplace_back(Columns[col]);
+                                
+                                //Updating encoding if defined.
+                                if(Encoded[col].size())
+                                {
+                                    object.Encoded[col] = Encoded[col];
+                                } 
+                            }
                     }
 
                         // Add to the object's dataset
@@ -840,6 +1376,8 @@ namespace cmll
             //Creating object to return
             Handler object;
 
+            object.Encoded.resize(1);
+
             //Error_DIR
             ERROR_DIR = "<In function operator[]>";
 
@@ -874,10 +1412,16 @@ namespace cmll
                     object.Dataset.emplace_back(Holder);
                     Holder.clear();
                 }
-
+                
 
                 
-                object.Columns.emplace_back(Columns[index]);   
+                object.Columns.emplace_back(Columns[index]);
+                
+                //Updating encoding if defined.
+                if(Encoded[index].size())
+                {
+                   object.Encoded[0] = Encoded[index];
+                } 
                 // Clearing the temporary storage for next iteration.
                 Holder.clear();
             }
@@ -918,6 +1462,9 @@ namespace cmll
            //The object to return
            Handler object;
 
+           //Creating space for Encoding
+           object.Encoded.resize(1);
+
            // Error directory
            ERROR_DIR = "<In function Handler::operator[]>";
 
@@ -944,6 +1491,7 @@ namespace cmll
                 {
                     
                     throw std::invalid_argument("Error : Column name '" + column + "' was not found.");
+                    
                 }
 
                 // Else store the original index of the column
@@ -963,6 +1511,10 @@ namespace cmll
                    object.Dataset.emplace_back(holder);
                    holder.clear();
                }
+               if(Encoded[index].size())
+                {
+                   object.Encoded[0] = Encoded[index];
+                } 
                
 
            }
@@ -970,12 +1522,14 @@ namespace cmll
            catch(const std::invalid_argument &e)
            {
                std::cerr<<ERROR_DIR << e.what() << '\n';
+               object.clear();
                
            }
 
            catch(const std::exception &e)
            {
                std::cerr<<ERROR_DIR<<e.what()<<": Unkown Error occurred.\n";
+               object.clear();
                
            } 
 
@@ -1003,6 +1557,9 @@ namespace cmll
            
            //The object to return
            Handler object;
+
+           //Resizing the encoding vector
+           object.Encoded.resize(columns.size());
 
            // Error directory
            ERROR_DIR = "<In function Handler::operator[]>";
@@ -1043,6 +1600,12 @@ namespace cmll
                        index = std::distance(Columns.begin(),name);
                        column_by_index.emplace_back(index);
                        object.Columns.emplace_back(Columns[index]);
+                      
+                        //Copying the encoding (if present)
+                       if(Encoded[index].size())
+                       {
+                           object.Encoded[index] = Encoded[index];
+                       }
                    }
                }
 
@@ -1065,12 +1628,14 @@ namespace cmll
            catch(const std::invalid_argument &e)
            {
                std::cerr<<ERROR_DIR << e.what() << '\n';
+               object.clear();
                
            }
 
            catch(const std::exception &e)
            {
                std::cerr<<ERROR_DIR<<e.what()<<": Unkown Error occurred.\n";
+               object.clear();
                
            } 
 
@@ -1105,6 +1670,9 @@ namespace cmll
             // Creating object of the class to be returned
             Handler object;
 
+            //Creating space for Encoding
+            object.Encoded.resize(cols.size());
+
             //Error dir
             ERROR_DIR = "<In function operator()>";
             
@@ -1133,7 +1701,7 @@ namespace cmll
                     {
                         std::cout<<"Received '"<<row<<"' but expected less than '"<<num_rows<<"'.\n";
                         throw std::range_error("Error : Handler row index out of range.");
-                        return object;
+                        
                     }
 
                     // For each column index
@@ -1151,8 +1719,20 @@ namespace cmll
                         {
                             std::cout<<"Received '"<<col<<"' but expected less than '"<<num_cols<<"'.\n";
                             throw std::range_error("Error : Handler column index out of range\n");
-                            return object;
+
+                            
+                            
                         }
+
+                        if(row==0)
+                        {
+                            object.Columns.emplace_back(Columns[col]);
+                            if(Encoded[col].size())
+                            {
+                                object.Encoded[col] = Encoded[col];
+                            }
+                        }
+                        
                         holder.emplace_back(Dataset[row][col]);     
                     }
                     object.Dataset.emplace_back(holder);
@@ -1164,10 +1744,12 @@ namespace cmll
             catch(const std::range_error& e)
             {
                 std::cerr<<ERROR_DIR<<e.what()<<'\n';
+                object.clear();
             }
             catch(const std::exception& e)
             {
                 std::cerr<<ERROR_DIR<< e.what() <<"Unkown Error.\n";
+                object.clear();
             }
 
             return object;
@@ -1186,9 +1768,6 @@ namespace cmll
         * Return : Handler object containing row and column of the original dataset which is defined in the parameters
 
         * Function Version : 0.0.0
-
-        * Note negative indexing is NOT supported yet due to technical reasons.
-
         *
         */
 
@@ -1197,6 +1776,9 @@ namespace cmll
             
             // Creating object of the class to be returned
             Handler object;
+
+            //Creating space for Encoding
+            object.Encoded.resize(1);
             
             // Using a temporary storage
             std::vector<double> holder;
@@ -1240,8 +1822,16 @@ namespace cmll
                     
                 }
 
-                holder.emplace_back(Dataset[row][col]);     
-                    
+                holder.emplace_back(Dataset[row][col]);  
+                
+                object.Columns.emplace_back(Columns[col]);
+
+                
+                if(Encoded[col].size())
+                {
+                    object.Encoded[0] = Encoded[col];
+                }
+                   
                 object.Dataset.emplace_back(holder);
                 holder.clear();
             }
@@ -1249,15 +1839,43 @@ namespace cmll
             catch(const std::range_error& e)
             {
                 std::cerr<<ERROR_DIR<<e.what()<<"\n";
+                object.clear();
             }
 
             catch(const std::exception& e)
             {
                 std::cerr<<ERROR_DIR<< e.what() <<"Unkown Error.\n";
+                object.clear();
             }
 
             return object;
         }
+
+        /*
+        *
+
+        * Function Name : operator=
+
+        * Description : Overloading the = operator to allow assignment 
+
+        * Parameters : object : Handler object
+
+        * Return : Handler object 
+
+        * Function Version : 0.0.0
+
+        *
+        *
+
+       Handler &Handler::operator=(const Handler &object)
+       {
+            Dataset = object.Dataset;
+            Columns = object.Columns;
+            Encoded = object.Encoded;
+
+            return *this;
+       }
+        */
 
         /* Overloading the extraction operator */
         std::ostream& operator<<(std::ostream& os, const Handler &obj)
@@ -1272,7 +1890,7 @@ namespace cmll
                 const std::size_t memory = obj.memory_usage();
 
                 // Displaying column names first
-                for(auto col:obj.Columns) std::cout<<col<<' ';
+                for(auto col:obj.Columns) std::cout<<col<<" ";
                 std::cout<<'\n';
 
                 // Displaying the dataset

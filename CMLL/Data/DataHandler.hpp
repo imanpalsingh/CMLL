@@ -16,18 +16,27 @@
 
 * Project version : 0.0.0
 
-* File version : 0.0.2
+* File version : 0.0.3
 
 * The contents of the program are distributed with versions numbers. If a particular function or content fails to execute, replace it with previous version from the backup folder.
 
 * Date Created  : FEB_8_20_21_12
  
-* Last modified : APR_05_20_19_35
+* Last modified : APR_06_20_14_33
 
 * Change Logs : 
 
         
-        1) Date : 05-04-2020 Time : 19:36
+        1) Date : 06-04-2020 Time : 14:33
+        Namespace data
+        # Added new function read_all
+        # Multi type file, categorical data now can be loaded using read_all which will automatically label encode non numeric data and assign Nan to missing values
+        
+        Handler class
+        # Added new attribute Encoded to store the Label encoding
+        # function clear now also clears the Encoded attribute
+
+        2) Date : 05-04-2020 Time : 19:36
         Namespace data
         # function insert is now a member of data namespace and a friend of Handler class
         # Function read now accepts mandatory column names and stores them separately.
@@ -40,7 +49,7 @@
         # Extraction operator << is now overload for cout
         # Subscript operator [] now also accepts either column name(string) or vector of column name(vector<string>) as parameter
         
-        2) Date : 04-04-2020 Time : 23:15
+        3) Date : 04-04-2020 Time : 23:15
         #Handler and functions under file namespace are moved to a new common namespace data
         #Added a new function read_columns under the namspace data
         
@@ -51,7 +60,7 @@
             #Negative indexing is now supported in all overloads
         
 
-        3) Date : 28-03-20 Time : 22:21
+        4) Date : 28-03-20 Time : 22:21
         Handler class
             #Added new function insert ( 2 overloads)
 
@@ -75,13 +84,16 @@
 #include<algorithm>
 #include<array>
 #include<fstream>
+#include<iomanip>
 #include<iostream>
 #include<limits>
 #include<stdexcept>
 #include<stdio.h>
 #include<string>
 #include<vector>
+#include<sstream>
 #include<stdio.h>
+
 
 #include"../utils/defined.hpp"
 #include"../utils/util.hpp"
@@ -112,7 +124,7 @@ namespace data
     NOTE : Except for the Column names row all other rows should only contain , int,float or double types
     return type : Handler
     */
-    data::Handler read(const std::string &filename,const char &line_separator='\n',const char &value_separator=',');
+    Handler read(const std::string &filename,const char &line_separator='\n',const char &value_separator=',');
 
     /*
     Function to read files (csv by default).
@@ -128,7 +140,7 @@ namespace data
 
     return type : Handler
     */
-    data::Handler read_all(const std::string &filename,const char &line_separator='\n',const char &value_separator=',');
+    Handler read_all(const std::string &filename,const char &line_separator='\n',const char &value_separator=',');
 
     /*
     Function to read columns (csv by default).
@@ -140,7 +152,7 @@ namespace data
                 value_Separator - > Th eseparator which separates cols (default ',' - csv)
     return type : std::size_t
     */
-    std::size_t read_columns(data::Handler &obj,const std::string &column_line,const char &line_separator='\n',const char &value_separator=',');
+    std::size_t read_columns(Handler &obj,const std::string &column_line,const char &line_separator='\n',const char &value_separator=',');
 
 
     /*
@@ -149,7 +161,7 @@ namespace data
                 column_names : The column names 
     return type: void
     */
-    Handler create(const data::STORAGE &dataset,const std::vector<std::string> &column_names);
+    Handler create(const STORAGE &dataset,const std::vector<std::string> &column_names);
 
     /* C L A S S E S */
 
@@ -171,10 +183,14 @@ namespace data
         protected :
 
         // Variable to hold dataset values
-        data::STORAGE  Dataset; 
+        STORAGE  Dataset; 
 
         // Variable to hold the Error directories
         std::string ERROR_DIR;
+
+        // vector to store label encoded strings
+        std::vector<std::vector<std::string>> Encoded;
+
 
 
         /* FUNCTIONS */
@@ -191,6 +207,8 @@ namespace data
                     value_Separator - > Th eseparator which separates cols (default ',' - csv)
 
         For example in a csv file  [   1,2,3,4 ] = ',' is theseparator
+
+        NOTE : Except for the Column names row all other rows should only contain , int,float or double types
         return type : Handler
         */
         friend Handler read(const std::string &filename,const char &line_separator,const char &value_separator);
@@ -208,6 +226,23 @@ namespace data
         */
         friend std::size_t read_columns(Handler &obj,const std::string &column_line,const char &line_separator,const char &value_separator);
 
+        /*
+        Function to read files (csv by default).
+        File with the filename specified is opened for reading. Each row is parsed with theseparators defined.
+        Binary files are not supported since they require different mechanism 
+
+        Paramteres :  filename - >  A valid filepath for the file to be read
+                    line_separator -> The seperator which separates rows (default '\n')
+                    value_Separator - > Th eseparator which separates cols (default ',' - csv)
+
+        For example in a csv file  [   1,2,3,4 ] = ',' is theseparator
+        Note :  This function can handle different datatypes. Except for the First row (column names) all other rows are automatically labelled encoded from 0 to unique values;
+
+        return type : Handler
+        */
+        friend Handler read_all(const std::string &filename,const char &line_separator,const char &value_separator);
+
+
         /* Overloading the extraction operator */
         friend std::ostream& operator<<(std::ostream& out,const Handler &obj);
 
@@ -221,8 +256,7 @@ namespace data
         
         /* Constructor to load defaults */
         Handler();
-        Handler(const data::STORAGE &dataset, const std::vector<std::string> &column_names);
-
+        Handler(const STORAGE &dataset, const std::vector<std::string> &column_names);
 
         /*
         Function to insert a column in the Handler object.
@@ -247,7 +281,7 @@ namespace data
                     column_names : The column names 
         return type: void
         */
-        friend Handler create(const data::STORAGE &dataset,const std::vector<std::string> &column_names);
+        friend Handler create(const STORAGE &dataset,const std::vector<std::string> &column_names);
 
         /*
         Function to save the Handler object to a file
@@ -269,6 +303,27 @@ namespace data
         
         
         /// Utilities ///
+
+        /*
+        Function to do a pretty print of the Handler object along with additional information such as label encoded values 
+        Parameters : None
+        return type: None
+        */
+        void show();
+
+        /*
+        Function to show what labels are assigned to what strings
+        Parameters : None
+        return type: None
+        */
+        void encoded_details();
+
+        /*
+        Function to return the vector containing the encoding details
+        Parameters : None
+        return type: std::vector<std::vector<std::string>>
+        */
+        std::vector<std::vector<std::string>> get_encoded_details() const;
 
         /*
         Function to get number of columns currently in the Handler object (STORAGE element)
@@ -305,7 +360,7 @@ namespace data
         Note :  This shall be the only method to retrieve the STORAGE element;
         return type: STORAGE
         */
-        data::STORAGE get()const;
+        STORAGE get()const;
         
         /// Operator Overloads ///
 
@@ -360,10 +415,17 @@ namespace data
         Overloaded call operator '()'  for fetching of row and column defined in the indexes
         Parameters 1st - > row index to fetch
                 2nd - > col index to fetch;
-        Note : Negative indexing is ' NOT '  supported due to optimization reasons
+        Note : Negative indexing is supported
         return type: Handler
         */
         Handler operator()(int,int);
+
+        /*
+        Overloaded assignment operator for copying of values
+        Parameters : The object to copy
+        return : COpy of the parameter
+        */
+        //Handler &operator=(const Handler&);
 
         
         /* Functions to be implemented in version 1.0 of project */
@@ -372,7 +434,7 @@ namespace data
         //Function to remove columns
         
         // Function to remove rows and columns
-        /// data::STORAGE remove(std::vector<int> indexes);
+        /// STORAGE remove(std::vector<int> indexes);
 
         // Overloading () operator with std::string parameter for interactive query processing
         /// Handler operator()(std::string)
