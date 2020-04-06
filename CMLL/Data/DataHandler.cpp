@@ -30,7 +30,7 @@
 * Change Logs : 
 
  
-        1) Date : 06-04-2020 Time : 14:33 [ VERSION 0.0.1]
+        1) Date : 06-04-2020 Time : 14:33
         Namespace data
         # Added new function read_all
         # Multi type file, categorical data now can be loaded using read_all which will automatically label encode non numeric data and assign Nan to missing values
