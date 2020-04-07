@@ -339,8 +339,6 @@ namespace cmll
                 // Adding the last row to the dataset. Also checking for integrity of the format.
                 if(!data_holder.empty())
                 object.Dataset.emplace_back(data_holder);
-
-                if(column!=0) throw std::runtime_error("Error : File was not read completely due to unkown error.If file contains categorical data use read_all()");
             }
 
             // Catiching all the exceptions
@@ -459,6 +457,7 @@ namespace cmll
                 // Extracting the column names and number of columns
                 num_columns = read_columns(object,column_line,line_separator,value_separator);
 
+               
                 // Resizing the encoded vector according to the number of columns
                 object.Encoded.resize(num_columns);
             
@@ -474,6 +473,7 @@ namespace cmll
                 // storing single value
                 std::string value; 
 
+                
                 // Reading rest of the file line by line
                 while(std::getline(_file,line,line_separator))
                 {   
@@ -486,11 +486,18 @@ namespace cmll
                     while(std::getline(line_stream,value,value_separator))
                     {
                         
+                        
                         // If it is a missing value
                         if(value=="")
                         {
                             //Assign Nan to it
                             data_holder.emplace_back(std::numeric_limits<double>::quiet_NaN());
+                        }
+
+                        if(column == num_columns) 
+                        {
+                            std::cout<<"The Number of expected columns were "<<num_columns<<"\n";
+                            throw std::length_error("Error : The csv format is not preserved in the file");
                         }
                         
                         // if its not a missing value
@@ -532,10 +539,13 @@ namespace cmll
                                 throw std::length_error(e.what());                        
                             }
                         }
-                        column++;
+
+                        
+                        ++column;
 
                         
                     }
+
                     // If the number of columns is lesser than what it is supposed to be. Fill them with NaN value;
                     if(column < num_columns)
                     {
@@ -1280,6 +1290,9 @@ namespace cmll
             Handler object;
 
             object.Encoded.resize(indexes.size());
+
+            // Variable to keep count of column of new object
+            std::size_t count=0;
             
             //Error_DIR
             ERROR_DIR = "<In function operator[]>";
@@ -1312,7 +1325,7 @@ namespace cmll
                             if(col> num_cols-1)
                             {
                                 std::cout<<"Received '"<<col<<"' but expected less than '"<<num_cols<<"'.\n";   
-                                throw std::out_of_range(ERROR_DIR + "Error : Handler index out of range");
+                                throw std::out_of_range("Error : Handler index out of range");
                                    
                             }
 
@@ -1327,9 +1340,11 @@ namespace cmll
                                 //Updating encoding if defined.
                                 if(Encoded[col].size())
                                 {
-                                    object.Encoded[col] = Encoded[col];
+                                    object.Encoded[count] = Encoded[col];
                                 } 
                             }
+
+                            count++;
                     }
 
                         // Add to the object's dataset
@@ -1561,6 +1576,9 @@ namespace cmll
            //Resizing the encoding vector
            object.Encoded.resize(columns.size());
 
+           // Variable to keep count of column of new object
+            std::size_t count=0;
+
            // Error directory
            ERROR_DIR = "<In function Handler::operator[]>";
 
@@ -1604,9 +1622,11 @@ namespace cmll
                         //Copying the encoding (if present)
                        if(Encoded[index].size())
                        {
-                           object.Encoded[index] = Encoded[index];
+                           object.Encoded[count] = Encoded[index];
                        }
                    }
+
+                   count++;
                }
 
                // Storing the column
@@ -1675,6 +1695,9 @@ namespace cmll
 
             //Error dir
             ERROR_DIR = "<In function operator()>";
+
+            // Variable to keep count of column of new object
+            std::size_t count=0;
             
             // Using a temporary storage
             std::vector<double> holder;
@@ -1729,11 +1752,12 @@ namespace cmll
                             object.Columns.emplace_back(Columns[col]);
                             if(Encoded[col].size())
                             {
-                                object.Encoded[col] = Encoded[col];
+                                object.Encoded[count] = Encoded[col];
                             }
                         }
                         
-                        holder.emplace_back(Dataset[row][col]);     
+                        holder.emplace_back(Dataset[row][col]); 
+                        count++;    
                     }
                     object.Dataset.emplace_back(holder);
                     holder.clear();
