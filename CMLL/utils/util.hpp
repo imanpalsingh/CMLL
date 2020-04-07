@@ -86,7 +86,6 @@ namespace cmll
     Parameters : X - >  STORAGE element, size - > size to follow
     return type : bool
     */
-
     bool is_legal(const data::STORAGE &X,const size_t &size);
     }
 

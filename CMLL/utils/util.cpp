@@ -230,8 +230,7 @@ namespace cmll
 
         *
         */
-
-        bool is_legal(const data::STORAGE &X,const size_t &num_of_features)
+       bool is_legal(const data::STORAGE &X,const size_t &num_of_features)
         {
             for(auto row:X)
             {
