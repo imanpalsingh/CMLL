@@ -22,7 +22,7 @@ More information on bulding from source and debugging can be found in the [docum
 
 ## Change Logs
 
-<small> For functional level changes refer to source </small>
+<small> For functional level changes, refer to source </small>
 
 <b>Current (version 0.1.0)</b>  :
 
