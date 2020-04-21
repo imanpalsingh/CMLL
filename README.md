@@ -58,4 +58,4 @@ More information on bulding from source and debugging can be found in the [docum
    1) K Nearest Neighbors Regressor
    2) K Nearest Neighbors Classifier
 
-> Documentation is currently not avaialble as the library is going through structural changes. Once stable version is released the documentation will be available. However, internal docmentation is provided and can be helpful.
+> Documentation is currently not available as the library is going through structural changes. Once stable version is released the documentation will be available. However, internal docmentation is provided and can be helpful.
