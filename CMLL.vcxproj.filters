@@ -78,5 +78,7 @@
   <ItemGroup>
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
+    <None Include="CMLL.vcxproj.filters~Updated" />
+    <None Include="CMLL.vcxproj~Updated" />
   </ItemGroup>
 </Project>
