@@ -1,4 +1,7 @@
 # CMLL
+![CMLL LOGO](Logo.png "Logo")
+
+
 CMLL : C++'s Machine Learning Library
 
 ## Description
