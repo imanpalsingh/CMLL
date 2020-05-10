@@ -1,8 +1,17 @@
 # CMLL
+
 ![CMLL LOGO](Logo.png "Logo")
 
 
 CMLL : C++'s Machine Learning Library
+
+[![CDNJS](https://img.shields.io/github/license/imanpalsingh/CMLL?logo=CMLL)](https://github.com/imanpalsingh/CMLL/blob/master/LICENSE)
+[![CDNJS](https://img.shields.io/badge/coverage-100%25-brightgreen)](#)
+[![CDNJS](https://img.shields.io/badge/docs-0%25-red)](#)
+[![CDNJS](https://img.shields.io/badge/CMLL-v0.1.0-blue)](#)
+
+
+
 
 ## Description
 
