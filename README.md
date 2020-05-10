@@ -81,7 +81,7 @@ More information on bulding from source and debugging can be found in the [docum
 using namespace cmll;
 int main()
 {
-    Handler dataset;
+    data::Handler dataset;
     data::read(dataset,"salary.csv"); // reading a file named salary.csv;
     
     auto X = dataset({1,7,8,4,}).get();
