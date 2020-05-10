@@ -146,6 +146,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="includes\Bayes\NaiveBayes.h" />
+    <ClInclude Include="includes\Data\Handler.h" />
+    <ClInclude Include="includes\Linear\Linear.h" />
+    <ClInclude Include="includes\Neighbors\Knn.h" />
+    <ClInclude Include="includes\Numeric\Array.h" />
+    <ClInclude Include="includes\Numeric\Function.h" />
+    <ClInclude Include="includes\Numeric\Matrix.h" />
+    <ClInclude Include="includes\utils\Defines.h" />
+    <ClInclude Include="includes\utils\Preprocessing.h" />
+    <ClInclude Include="includes\utils\Utils.h" />
     <ClInclude Include="src\Bayes\NaiveBayes.h" />
     <ClInclude Include="src\Data\Handler.h" />
     <ClInclude Include="src\Linear\Linear.h" />
@@ -173,6 +183,11 @@
     <None Include=".gitignore" />
     <None Include="CMLL.vcxproj.filters~Updated" />
     <None Include="CMLL.vcxproj~Updated" />
+    <None Include="LICENSE" />
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Logo.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

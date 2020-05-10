@@ -114,55 +114,54 @@ int main()
 #include<vector>
 #include<Data/handler.h> // For file reading 
 #include<utils/Preprocessing.h> // For preprocessing
-#include<utils/Utils.h>
+#include<utils/Utils.h> // for utility checks
+#include<exception>
 
 int main()
 {
     // Reading a csv file
-    cmll::data::Handler Features,Labels;
-    
-    data::read(Features,"Salary_Features.csv");
-    data::read(Labels,"Salary_Labels.csv");
-    
+    cmll::data::Handler Features, Labels;
+
+    cmll::data::read(Features, "Salary_Features.csv");
+    cmll::data::read(Labels, "Salary_Labels.csv");
+
     // Array to store their values
-    std::vector<std::vector<double>> X,y;
-    
+    std::vector<std::vector<double>> X, y;
+
     Features.values(X);
     Labels.values(y);
-    
+
     // Clearing Features and Labels as they are no longer required
     Features.clear();
     Labels.clear();
-    
+
     // Using utility checks to make sure they are safe to be used.
-    
+
     //Checking if the vectors have Nan values
-    if(cmll::utils::check::hasNaN(X) || cmll::utils::check::hasNaN(y))
+    if (cmll::utils::check::hasNaN(X) || cmll::utils::check::hasNaN(y))
     {
-        std::cout<<"Dataset has NaN values!";
+        std::cout << "Dataset has NaN values!";
         return 0;
     }
-    
+
     // Checking if X and Y are in correct shapes 
     try
     {
-        cmll::utils::checks::Xy(X,y) //  throws invalid length if not required length 
+        cmll::utils::check::Xy(X, y); //  throws invalid length if not required length 
     }
-    
-    catch(const std::invalid_lenght& e)
+
+    catch (const std::length_error& e)
     {
-        std::cout<<e.what();
+        std::cout << e.what();
         return 0;
     }
-    
-    
-    // Splitting X and y into train and test sets
-    std::vector<std::vector<double>> XTrain,Xtest,yTrain,YTest;
-    cmll::utils::preprocessing::split(X,XTrain,XTest,0.8);
-    cmll::utils::preprocessing::split(y,yTrain,yTest,0.8);
-    
-    
-    
+
+
+    // Splitting X and y into train and test sets by 80% and 20% ratio
+    std::vector<std::vector<double>> XTrain, XTest, yTrain, yTest;
+    cmll::preprocessing::split(X, XTrain, XTest, 0.8);
+    cmll::preprocessing::split(y, yTrain, yTest, 0.8);
+
 }
 ```
 > Documentation is currently not available as the library is going through structural changes. Once stable version is released the documentation will be available. However, internal docmentation is provided and can be helpful.
