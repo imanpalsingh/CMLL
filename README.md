@@ -66,5 +66,41 @@ More information on bulding from source and debugging can be found in the [docum
 
    1) K Nearest Neighbors Regressor
    2) K Nearest Neighbors Classifier
+   
+## Example
+
+```cpp
+/*
+* Creating a Ridge Classifier model in CMLL
+*/
+#include<iostream>
+#include<vector>
+#include<Linear/Linear.h> // for ridge classifier
+#include<Data/Handler.h> //  for reading files
+
+using namespace cmll;
+int main()
+{
+    Handler dataset;
+    data::read(dataset,"salary.csv"); // reading a file named salary.csv;
+    
+    auto X = dataset({1,7,8,4,}).get();
+    auto y = dataset(-1).get();                 // Fetching feature matrix and vector of prediction
+         
+    // Building model
+    linear::RidgeClassifier clf;
+    clf.model(X,y);
+    
+    // Predicting
+    std::vector<std::vector<double>> yPred(X.size(),std::vector<double>(1)); // variable to store result in
+    clf.predict(X,yPred);
+    
+    // Evaluating
+    std::cout<<clf.score(y,yPred);
+    
+    return 0;
+}
+```
+
 
 > Documentation is currently not available as the library is going through structural changes. Once stable version is released the documentation will be available. However, internal docmentation is provided and can be helpful.
