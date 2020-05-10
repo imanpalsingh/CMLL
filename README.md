@@ -67,7 +67,7 @@ More information on bulding from source and debugging can be found in the [docum
    1) K Nearest Neighbors Regressor
    2) K Nearest Neighbors Classifier
    
-## Example
+## Examples
 
 ```cpp
 /*
@@ -76,31 +76,93 @@ More information on bulding from source and debugging can be found in the [docum
 #include<iostream>
 #include<vector>
 #include<Linear/Linear.h> // for ridge classifier
-#include<Data/Handler.h> //  for reading files
 
-using namespace cmll;
+
 int main()
 {
-    data::Handler dataset;
-    data::read(dataset,"salary.csv"); // reading a file named salary.csv;
+    // Sample dataset
+    std::vector<std::vector<double>> X = { {10,12,23,123},
+                                           {13,15,43,223},
+                                           {02,12,72,321},
+                                           {1,2,13,402},
+                                           {110,112,8,553}
+                                          };
+    std::vector<std::vector<double>> y = { {0},{1},{0},{1},{0} };
     
-    auto X = dataset({1,7,8,4,}).get();
-    auto y = dataset(-1).get();                 // Fetching feature matrix and vector of prediction
-         
-    // Building model
-    linear::RidgeClassifier clf;
+    
+    //Building the model
+    cmll::linear::RidgeClassifier clf;
     clf.model(X,y);
     
     // Predicting
-    std::vector<std::vector<double>> yPred(X.size(),std::vector<double>(1)); // variable to store result in
+    std::vector<std::vector<double>> yPred(X.size(),std::vector<double>(1)); // variable to store predicted values
     clf.predict(X,yPred);
     
-    // Evaluating
+    //Evaluating
     std::cout<<clf.score(y,yPred);
     
     return 0;
 }
 ```
 
+```cpp
+/*
+* Data loading and preprocessing
+*/
 
+#include<iostream>
+#include<vector>
+#include<Data/handler.h> // For file reading 
+#include<utils/Preprocessing.h> // For preprocessing
+#include<utils/Utils.h>
+
+int main()
+{
+    // Reading a csv file
+    cmll::data::Handler Features,Labels;
+    
+    data::read(Features,"Salary_Features.csv");
+    data::read(Labels,"Salary_Labels.csv");
+    
+    // Array to store their values
+    std::vector<std::vector<double>> X,y;
+    
+    Features.values(X);
+    Labels.values(y);
+    
+    // Clearing Features and Labels as they are no longer required
+    Features.clear();
+    Labels.clear();
+    
+    // Using utility checks to make sure they are safe to be used.
+    
+    //Checking if the vectors have Nan values
+    if(cmll::utils::check::hasNaN(X) || cmll::utils::check::hasNaN(y))
+    {
+        std::cout<<"Dataset has NaN values!";
+        return 0;
+    }
+    
+    // Checking if X and Y are in correct shapes 
+    try
+    {
+        cmll::utils::checks::Xy(X,y) //  throws invalid length if not required length 
+    }
+    
+    catch(const std::invalid_lenght& e)
+    {
+        std::cout<<e.what();
+        return 0;
+    }
+    
+    
+    // Splitting X and y into train and test sets
+    std::vector<std::vector<double>> XTrain,Xtest,yTrain,YTest;
+    cmll::utils::preprocessing::split(X,XTrain,XTest,0.8);
+    cmll::utils::preprocessing::split(y,yTrain,yTest,0.8);
+    
+    
+    
+}
+```
 > Documentation is currently not available as the library is going through structural changes. Once stable version is released the documentation will be available. However, internal docmentation is provided and can be helpful.
