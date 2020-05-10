@@ -108,8 +108,6 @@
   <ItemGroup>
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
-    <None Include="CMLL.vcxproj.filters~Updated" />
-    <None Include="CMLL.vcxproj~Updated" />
     <None Include="LICENSE" />
     <None Include="README.md" />
   </ItemGroup>
