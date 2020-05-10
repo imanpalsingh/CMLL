@@ -1,0 +1,2 @@
+A:\My_files\Projects\Machine Larning Library for c++\Library\CMLL\lib\Debug\x64\CMLL.pdb
+A:\My_files\Projects\Machine Larning Library for c++\Library\CMLL\intermediates\lib\Debug\x64\CMLL.pdb
