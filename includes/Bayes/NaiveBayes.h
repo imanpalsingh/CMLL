@@ -15,11 +15,11 @@
 	* Project version 0.1.0
 	* File version 0.1.0
 	* Date created : March 24, 2020
-	* Last modified : April 16, 2020
+	* Last modified : May 10, 2020
 
 	* Change logs (0.1.0)
 
-			None
+		No changes
 
 	Note :  For earlier change logs of version before the current one, refer to backups folder
 */
@@ -50,7 +50,7 @@ namespace cmll
 	*/
 	namespace bayes
 	{
-		/**
+	/**
 		* Class Name : GaussianNaiveBayes
 
 		* Class Description : Class containing functions required for building a Gaussian Naive Bayes model
@@ -78,7 +78,7 @@ namespace cmll
 		6) score
 
 		*
-		*/
+	*/
 		class GaussainNaiveBayes
 		{
 		protected:
@@ -577,7 +577,7 @@ namespace cmll
 
 		};
 
-		/**
+	/**
 		* Class Name :  Bernoulli Naive Bayes
 
 		* Class Description : Class containing functions required for building a  Bernoulli Naive Bayes model
@@ -601,7 +601,7 @@ namespace cmll
 		4) score @inherited
 
 		*
-		*/
+	*/
 		class BernoulliNaiveBayes : public MultinomialNaiveBayes
 		{
 		public:

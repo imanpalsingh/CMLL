@@ -42,7 +42,7 @@
 namespace cmll
 {
 	/*
-		Name space for data realted operations, functions and classes
+		Name space for data related operations, functions and classes
 	*/
 	namespace data
 	{
@@ -278,10 +278,10 @@ namespace cmll
 		   */
 			Handler(const Storage& dataset, const std::vector<std::string> columnNames);
 
-			/**
+		/**
 			* Function Name :  Clear
 
-			* Function Description :  Function to clear the Hadler object. Which includes deallocating all memory that is taken by the object
+			* Function Description :  Function to clear the Handler object. Which includes deallocating all memory that is taken by the object
 
 			* Parameters :
 
@@ -317,7 +317,7 @@ namespace cmll
 				None
 
 
-			* Return :	   cmll::data::Storage::size_typ - >  Number of Columns
+			* Return :	   cmll::data::Storage::size_type - >  Number of Columns
 
 
 			* Example
@@ -611,7 +611,7 @@ namespace cmll
 					cmll::data::Handler dataset,, sub;
 					cmll::data::read(dataset,"dataset.csv");
 
-					dataset(sub,{12,12},{13,12})
+					dataset(sub,{12,12},{13,12});
 				}
 
 
@@ -655,7 +655,7 @@ namespace cmll
 					cmll::data::Handler dataset, sub;
 					cmll::data::read(dataset,"dataset.csv");
 
-					dataset.remove(sub,{3,4,5});
+					dataset(sub,{3,4,5});
 				}
 			*/
 			void operator()(Handler& obj, const std::vector<long int> columnIndexes);
@@ -688,6 +688,7 @@ namespace cmll
 
 				#include<vector>
 				#include<Data/Handler.h>
+				#include<string>
 
 				int main()
 				{
@@ -696,7 +697,7 @@ namespace cmll
 					cmll::data::Handler dataset, sub;
 					cmll::data::read(dataset,"dataset.csv");
 
-					dataset.remove(sub,{"id","age"}s);
+					dataset(sub,{"id","age"}s);
 				}
 			*/
 			void operator()(Handler& obj, const std::vector<std::string> columnNames);
@@ -769,7 +770,7 @@ namespace cmll
 			int main()
 			{
 				//vector(y) stuff here
-				cmll::data::write(dataset,"Dataset.csv",'|',';')
+				cmll::data::save(dataset,"Dataset.csv",'|',';')
 			}
 
 

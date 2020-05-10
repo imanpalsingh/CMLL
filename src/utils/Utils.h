@@ -122,7 +122,7 @@ namespace cmll
 
 
 			*/
-			void Xy(const data::Storage& X, const data::Storage& y); // Throws std::invalid_length
+			void Xy(const data::Storage& X, const data::Storage& y); // Throws std::length_error
 
 			/**
 			* Function Name :  XTest
