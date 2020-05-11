@@ -425,9 +425,9 @@ namespace cmll
         };
 
         /**
-        * Class Name : RidgeRegression
+        * Class Name : RidgeClassifier
 
-        * Class Description : Class containing functions required for building a Ridge regression model
+        * Class Description : Class containing functions required for building a Ridge classifier model
 
         * Attributes :
 
