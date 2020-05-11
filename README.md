@@ -22,12 +22,10 @@ A Machine Learning library build using just standard C++ from scratch. CMLL uses
 ### Binaries
 The precompiled binary for x86 and x64 systems can be found [here](https://github.com/imanpalsingh/CMLL/tree/master/lib).
 The includes are available [here](https://github.com/imanpalsingh/CMLL/tree/master/includes).<br>
-For information regarding linking and including refer to the [documentation](#).
 
 ### Source
 
 The source can be found [here](https://github.com/imanpalsingh/CMLL/tree/master/src). Alternatively the repository can be pulled to load the Visual Studio project for building and debugging.<br>
-More information on bulding from source and debugging can be found in the [documentation](#)
 
 ## Change Logs
 
@@ -164,4 +162,3 @@ int main()
 
 }
 ```
-> Documentation is currently not available as the library is going through structural changes. Once stable version is released the documentation will be available. However, internal docmentation is provided and can be helpful.
