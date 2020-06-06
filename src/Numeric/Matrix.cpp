@@ -28,7 +28,7 @@
 /* 
 	All th includes are to be aligned in the alphabetical order 
 */
-#include"Matrix.h"
+#include"../../includes/Numeric/Matrix.h"
 
 /*
 	Parent name space : All name spaces lie under this parent name space

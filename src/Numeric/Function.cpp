@@ -23,7 +23,7 @@
 	Note :  For earlier change logs of version before the current one, refer to backups folder
 */
 
-#include"Function.h"
+#include"../../includes/Numeric/Function.h"
 
 /*
 	Parent name space : All names paces lie under this parent name space

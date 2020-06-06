@@ -156,16 +156,6 @@
     <ClInclude Include="includes\utils\Defines.h" />
     <ClInclude Include="includes\utils\Preprocessing.h" />
     <ClInclude Include="includes\utils\Utils.h" />
-    <ClInclude Include="src\Bayes\NaiveBayes.h" />
-    <ClInclude Include="src\Data\Handler.h" />
-    <ClInclude Include="src\Linear\Linear.h" />
-    <ClInclude Include="src\Neighbors\Knn.h" />
-    <ClInclude Include="src\numeric\Array.h" />
-    <ClInclude Include="src\numeric\Function.h" />
-    <ClInclude Include="src\numeric\Matrix.h" />
-    <ClInclude Include="src\utils\Defines.h" />
-    <ClInclude Include="src\utils\Preprocessing.h" />
-    <ClInclude Include="src\utils\Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Bayes\NaiveBayes.cpp" />

@@ -24,7 +24,7 @@
 	Note :  For earlier change logs of version before the current one, refer to backups folder
 */
 
-#include"Linear.h"
+#include"../../includes/Linear/Linear.h"
 
 /*
 	Parent name space : All name spaces lie under this parent name space

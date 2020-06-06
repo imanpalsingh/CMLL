@@ -26,7 +26,7 @@
 
 #include<iostream>
 
-#include "Knn.h"
+#include "../../includes/Neighbors/Knn.h"
 
 /*
 	Parent name space : All name spaces lie under this parent name space

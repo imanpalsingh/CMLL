@@ -24,7 +24,7 @@
 	Note :  For earlier change logs of version before the current one, refer to backups folder
 */
 
-#include"Array.h"
+#include"../../includes/Numeric/Array.h"
 
 /*
 	Parent name space : All name spaces lie under this parent names pace
